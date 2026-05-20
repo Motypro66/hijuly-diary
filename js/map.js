@@ -119,13 +119,50 @@ function renderList() {
     .join("");
 
   list.querySelectorAll(".post-item").forEach((el) => {
-    el.addEventListener("click", () => selectPost(el.dataset.id));
+    el.addEventListener("click", () => selectPost(el.dataset.id, { fromList: true }));
     el.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
-        selectPost(el.dataset.id);
+        selectPost(el.dataset.id, { fromList: true });
       }
     });
+  });
+}
+
+function popupHtml(p) {
+  const PU = window.PostUtils;
+  const gmap = PU && PU.hasMaps(p) ? PU.googleMapsUrl(p) : "";
+  const mapLabel = PU ? PU.mapsLinkLabel(p) : "Google 地图";
+  const gmapBtn = gmap
+    ? `<a class="popup-link popup-maps" href="${gmap}" target="_blank" rel="noopener noreferrer">📍 ${mapLabel}</a>`
+    : "";
+  const src = PU?.imageSrc(p);
+  const alt = (p.title || "笔记封面").replace(/"/g, "&quot;");
+  const coverHtml = src
+    ? `<div class="popup-cover"><img src="${src}" alt="${alt}" loading="lazy" decoding="async"></div>`
+    : "";
+
+  return `<div class="popup-box${src ? " popup-box--has-cover" : ""}">
+          ${coverHtml}
+          <div class="popup-inner">
+            <span class="post-tag tag-${p.category}">${TAG_LABELS[p.category] || ""}</span>
+            <h3>${p.title}</h3>
+            <p class="popup-loc">${PU?.mapsLinkLabel(p) || p.location || ""}</p>
+            <div class="popup-actions">
+              ${gmapBtn}
+              <button type="button" class="popup-link popup-xhs popup-xhs-btn" data-xhs-id="${p.id}">见原帖 →</button>
+            </div>
+          </div>
+        </div>`;
+}
+
+function bindPopupActions() {
+  const PU = window.PostUtils;
+  document.querySelectorAll(".popup-xhs-btn").forEach((b) => {
+    b.onclick = () => {
+      const post = POSTS.find((x) => x.id === b.dataset.xhsId);
+      if (post && PU) PU.openXhs(post);
+    };
   });
 }
 
@@ -146,47 +183,19 @@ function renderMarkers() {
       popupAnchor: [0, -28],
     });
 
-    const PU = window.PostUtils;
-    const xhs = PU ? PU.xhsUrl(p) : p.xhsLink || "#";
-    const gmap = PU && PU.hasMaps(p) ? PU.googleMapsUrl(p) : "";
-    const mapLabel = PU ? PU.mapsLinkLabel(p) : "Google 地图";
-    const gmapBtn = gmap
-      ? `<a class="popup-link popup-maps" href="${gmap}" target="_blank" rel="noopener noreferrer">📍 ${mapLabel}</a>`
-      : "";
-
     const marker = L.marker([p.lat, p.lng], { icon })
       .addTo(map)
-      .bindPopup(
-        `<div class="popup-box">
-          <span class="post-tag tag-${p.category}">${TAG_LABELS[p.category] || ""}</span>
-          <h3>${p.title}</h3>
-          <p class="popup-loc">${PU?.mapsLinkLabel(p) || p.location || ""}</p>
-          <div class="popup-actions">
-            ${gmapBtn}
-            <button type="button" class="popup-link popup-xhs popup-xhs-btn" data-xhs-id="${p.id}">见原帖 →</button>
-            <button type="button" class="popup-detail" data-detail-id="${p.id}">详情</button>
-          </div>
-        </div>`
-      );
+      .bindPopup(popupHtml(p));
 
-    marker.on("popupopen", () => {
-      document.querySelectorAll(".popup-xhs-btn").forEach((b) => {
-        b.onclick = () => {
-          const post = POSTS.find((x) => x.id === b.dataset.xhsId);
-          if (post && PU) PU.openXhs(post);
-        };
-      });
-      document.querySelectorAll(".popup-detail").forEach((b) => {
-        b.onclick = () => window.selectPost(b.dataset.detailId);
-      });
-    });
+    marker.on("popupopen", bindPopupActions);
 
     marker.on("click", () => selectPost(p.id));
     markers.push(marker);
   });
 }
 
-function selectPost(id) {
+function selectPost(id, opts = {}) {
+  const { fromList = false } = opts;
   activeId = id;
   const post = POSTS.find((p) => p.id === id);
   if (!post || !map) return;
@@ -200,9 +209,14 @@ function selectPost(id) {
     if (idx >= 0 && markers[idx]) markers[idx].openPopup();
   }
 
-  showDetail(post);
+  const isDesktop = window.innerWidth >= 900;
+  if (isDesktop || fromList) {
+    showDetail(post);
+  } else {
+    document.getElementById("detail-sheet")?.classList.remove("open");
+  }
 
-  if (window.innerWidth < 900) {
+  if (!isDesktop) {
     document.getElementById("post-panel")?.classList.remove("open");
   }
 }
@@ -243,7 +257,7 @@ function showDetail(post) {
     const src = PU.imageSrc(post);
     if (src) {
       coverEl.hidden = false;
-      coverEl.innerHTML = `<img src="${src}" alt="${post.title.replace(/"/g, "&quot;")}" loading="lazy">`;
+      coverEl.innerHTML = `<img src="${src}" alt="${post.title.replace(/"/g, "&quot;")}" loading="lazy" decoding="async">`;
     } else {
       coverEl.hidden = true;
       coverEl.innerHTML = "";
