@@ -39,9 +39,19 @@ async function loadPosts() {
 }
 
 function getFiltered() {
-  const withCoords = POSTS.filter((p) => p.lat != null && p.lng != null && !p.placeholder);
-  if (activeFilter === "all") return withCoords;
-  return withCoords.filter((p) => p.category === activeFilter);
+  const PU = window.PostUtils;
+  const food = POSTS.filter((p) => PU?.isFoodPost(p));
+  const base = activeFilter === "all" ? food : food.filter((p) => p.category === activeFilter);
+  return base.sort((a, b) => {
+    const am = PU?.hasMaps(a) ? 1 : 0;
+    const bm = PU?.hasMaps(b) ? 1 : 0;
+    if (bm !== am) return bm - am;
+    return (b.likes || 0) - (a.likes || 0);
+  });
+}
+
+function getMappable() {
+  return getFiltered().filter((p) => p.lat != null && p.lng != null);
 }
 
 function initMap() {
@@ -58,7 +68,7 @@ function initMap() {
 
   renderAll();
 
-  const mapped = POSTS.filter((p) => p.lat != null && p.lng != null && !p.placeholder);
+  const mapped = getMappable();
   if (mapped.length > 0) {
     const bounds = L.latLngBounds(mapped.map((p) => [p.lat, p.lng]));
     map.fitBounds(bounds.pad(0.15));
@@ -81,8 +91,8 @@ function renderList() {
     list.innerHTML = `
       <div class="panel-empty">
         <div class="emoji">🍜</div>
-        <p><strong>地图还是空的</strong></p>
-        <p style="margin-top:0.5rem">发第一篇小红书笔记后，这里会出现标点。</p>
+        <p><strong>还没有美食笔记</strong></p>
+        <p style="margin-top:0.5rem">同步小红书后会出现在这里。</p>
       </div>`;
     return;
   }
@@ -90,16 +100,20 @@ function renderList() {
   const PU = window.PostUtils;
   list.innerHTML = posts
     .map(
-      (p) => `
-    <article class="post-item ${activeId === p.id ? "active" : ""} ${p.isDemo ? "demo" : ""}"
+      (p) => {
+        const hasPin = p.lat != null && p.lng != null;
+        const mapLabel = PU?.hasMaps(p) ? PU.mapsLinkLabel(p) : "";
+        return `
+    <article class="post-item ${activeId === p.id ? "active" : ""} ${hasPin ? "" : "no-pin"}"
              data-id="${p.id}" role="button" tabindex="0">
       ${PU && PU.imageSrc(p) ? `<div class="post-thumb"><img src="${PU.imageSrc(p)}" alt="" loading="lazy"></div>` : ""}
       <div class="post-item-body">
         <span class="post-tag tag-${p.category}">${TAG_LABELS[p.category] || p.category}</span>
         <h3>${p.title}</h3>
-        <div class="post-meta">${p.location}</div>
+        <div class="post-meta">${mapLabel || p.location || ""}</div>
       </div>
-    </article>`
+    </article>`;
+      }
     )
     .join("");
 
@@ -118,7 +132,7 @@ function renderMarkers() {
   markers.forEach((m) => map.removeLayer(m));
   markers = [];
 
-  const posts = getFiltered();
+  const posts = getMappable();
 
   posts.forEach((p, i) => {
     const icon = L.divIcon({
@@ -145,7 +159,7 @@ function renderMarkers() {
         `<div class="popup-box">
           <span class="post-tag tag-${p.category}">${TAG_LABELS[p.category] || ""}</span>
           <h3>${p.title}</h3>
-          <p class="popup-loc">${p.location || ""}</p>
+          <p class="popup-loc">${PU?.mapsLinkLabel(p) || p.location || ""}</p>
           <div class="popup-actions">
             ${gmapBtn}
             <button type="button" class="popup-link popup-xhs popup-xhs-btn" data-xhs-id="${p.id}">见原帖 →</button>
@@ -179,10 +193,11 @@ function selectPost(id) {
   renderList();
   renderMarkers();
 
-  map.flyTo([post.lat, post.lng], 15, { duration: 0.8 });
-
-  const idx = getFiltered().findIndex((p) => p.id === id);
-  if (idx >= 0 && markers[idx]) markers[idx].openPopup();
+  if (post.lat != null && post.lng != null) {
+    map.flyTo([post.lat, post.lng], 15, { duration: 0.8 });
+    const idx = getMappable().findIndex((p) => p.id === id);
+    if (idx >= 0 && markers[idx]) markers[idx].openPopup();
+  }
 
   showDetail(post);
 
@@ -205,7 +220,9 @@ function showDetail(post) {
   if (demoBadge) demoBadge.hidden = !post.isDemo;
 
   document.getElementById("detail-title").textContent = post.title;
-  document.getElementById("detail-loc").textContent = post.location;
+  const PU = window.PostUtils;
+  document.getElementById("detail-loc").textContent =
+    PU?.mapsLinkLabel(post) || post.location || "";
   const priceEl = document.getElementById("detail-price");
   if (priceEl) priceEl.hidden = true;
 
@@ -221,7 +238,6 @@ function showDetail(post) {
   }
 
   const coverEl = document.getElementById("detail-cover");
-  const PU = window.PostUtils;
   if (coverEl && PU) {
     const src = PU.imageSrc(post);
     if (src) {
@@ -286,7 +302,7 @@ function filterPosts(cat, btn) {
 
   renderAll();
 
-  const posts = getFiltered();
+  const posts = getMappable();
   if (posts.length > 0) {
     const bounds = L.latLngBounds(posts.map((p) => [p.lat, p.lng]));
     map.fitBounds(bounds.pad(0.12));
@@ -297,8 +313,8 @@ function updateStat() {
   const el = document.getElementById("map-stat");
   if (el) {
     const n = getFiltered().length;
-    const demo = getFiltered().some((p) => p.isDemo);
-    el.textContent = `${n} 个足迹`;
+    const pins = getMappable().length;
+    el.textContent = `${n} 篇美食 · ${pins} 标点`;
   }
 }
 

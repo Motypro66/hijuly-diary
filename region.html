@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>随机一帖 · 小螃蟹看世界</title>
-  <meta name="description" content="小螃蟹帮你随机抽一篇 @空调17度 的小红书笔记。">
+  <title>按地区逛 · 小螃蟹看世界</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
@@ -19,7 +18,7 @@
   (function(){if(sessionStorage.getItem('crabTransition')==='1'){document.documentElement.classList.add('crab-incoming');}})();
   </script>
 </head>
-<body class="page-random page-july page-v4 page-bear">
+<body class="page-region page-july page-v4 page-bear">
 
 <div class="crab-transition" id="crab-transition" aria-hidden="true">
   <div class="crab-transition__bg"></div>
@@ -43,33 +42,26 @@
   <div class="wrap nav-inner">
     <div class="nav-brand">
       <a href="index.html" class="site-logo site-logo-link nav-to-home" data-site-name>小螃蟹<span>看世界</span></a>
-      <p class="nav-tagline">选择困难？不懂吃什么？</p>
+      <p class="nav-tagline" id="region-tagline">按地区逛</p>
     </div>
     <nav class="site-nav">
       <a href="index.html" class="nav-to-home">首页</a>
-      <a href="random.html" class="active nav-to-random">随机</a>
+      <a href="random.html" class="nav-to-random">随机</a>
       <a href="map.html" class="nav-to-map">地图</a>
     </nav>
-    <a href="random.html" class="nav-cta nav-to-random" data-transition-label="再抽一篇…">再抽一篇</a>
+    <a href="random.html" class="nav-cta nav-to-random">不懂吃什么？</a>
   </div>
 </header>
 
-<main class="random-main">
+<main class="region-main">
   <div class="wrap">
-    <section class="random-hero reveal">
-      <p class="section-label">What to eat</p>
-      <h1 class="section-title">不懂吃什么？</h1>
-      <p class="section-desc">选择困难交给小螃蟹 — 从 @HiJuly_IP 的美食档案里随机抽一篇，点「换一篇」再试。</p>
+    <section class="region-hero reveal">
+      <p class="section-label">Browse by area</p>
+      <h1 class="section-title" id="region-title">按地区逛</h1>
+      <p class="section-desc" id="region-desc">加载中…</p>
+      <div class="region-tabs" id="region-tabs"></div>
     </section>
-
-    <article id="random-card" class="random-card reveal" aria-live="polite">
-      <p class="random-loading">小螃蟹在帮你挑吃的…</p>
-    </article>
-
-    <div class="random-actions reveal">
-      <a href="random.html" class="btn btn-primary nav-to-random" data-transition-label="再挑一篇…">换一篇</a>
-      <a href="index.html" class="btn btn-ghost nav-to-home">回首页</a>
-    </div>
+    <div id="region-posts" class="notes-grid posts-grid"></div>
   </div>
 </main>
 
@@ -82,7 +74,7 @@
 <script src="js/post-utils.js"></script>
 <script src="js/xhs-modal.js"></script>
 <script src="js/page-transition.js"></script>
-<script src="js/random.js"></script>
+<script src="js/region.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/scroll-reveal.js"></script>
 </body>

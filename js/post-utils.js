@@ -6,7 +6,7 @@ window.PostUtils = {
   },
 
   hook(post) {
-    return post.hook || post.excerpt?.split("\n")[0] || "";
+    return post.hook || post.excerpt?.split("\n")[0]?.replace(/^\[.*?\]\s*/, "") || "";
   },
 
   xhsNoteId(post) {
@@ -21,42 +21,46 @@ window.PostUtils = {
     const id = this.xhsNoteId(post);
     if (!id) return window.SITE?.xhsProfileUrl || "#";
     let url = `https://www.xiaohongshu.com/explore/${id}`;
-    if (post.xsecToken) {
-      url += `?xsec_token=${post.xsecToken}&xsec_source=pc_user`;
-    }
+    if (post.xsecToken) url += `?xsec_token=${post.xsecToken}&xsec_source=pc_user`;
     return url;
   },
 
-  /** Google 地图：只用帖子里的完整地址（address / mapsQuery），没有就不显示 */
+  /** 清理 emoji 前缀，只用帖子里的店名+地址 */
+  cleanMapsText(str) {
+    if (!str) return "";
+    return str.replace(/^📍\s*/u, "").replace(/📍/gu, "").replace(/^\[打卡R\]\s*/i, "").trim();
+  },
+
   mapsSearchQuery(post) {
-    if (post.address) return post.address;
-    if (post.mapsQuery) return post.mapsQuery;
-    return "";
+    const q = post.mapsQuery ? this.cleanMapsText(post.mapsQuery) : "";
+    if (q) return q;
+    const name = this.cleanMapsText(post.placeName || "");
+    const addr = this.cleanMapsText(post.address || "");
+    if (name && addr) return `${name}, ${addr}`;
+    if (name) return name;
+    return this.cleanMapsText(post.address || "");
   },
 
   mapsLinkLabel(post) {
-    if (post.placeName) return post.placeName;
+    const name = this.cleanMapsText(post.placeName || "");
+    if (name) return name;
     const q = this.mapsSearchQuery(post);
     if (!q) return "";
-    if (post.location && post.location.length > 2 && !/^\d+$/.test(post.location)) {
-      return post.location;
-    }
-    const parts = q.split(",").map((s) => s.trim()).filter(Boolean);
-    if (parts.length >= 2 && /^\d/.test(parts[0])) {
-      return parts.slice(0, 2).join(", ");
-    }
-    return parts[0] || "导航";
+    return q.split(",")[0].trim();
   },
 
   googleMapsUrl(post) {
-    if (post.googleMapsUrl) return post.googleMapsUrl;
     const q = this.mapsSearchQuery(post);
     if (!q) return "";
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
   },
 
   hasMaps(post) {
-    return !!this.googleMapsUrl(post);
+    return !!this.mapsSearchQuery(post);
+  },
+
+  isFoodPost(post) {
+    return post.isFood === true;
   },
 
   openXhs(post) {
@@ -78,13 +82,11 @@ window.PostUtils = {
     if (!src) {
       return `<div class="${className} post-cover--empty crab-walk-surface" aria-hidden="true"><span>🦀</span></div>`;
     }
-    const mapHref = post.lat != null && post.lng != null
+    const href = this.hasMaps(post)
       ? `map.html?id=${encodeURIComponent(post.id)}`
-      : this.hasMaps(post)
-        ? `map.html?id=${encodeURIComponent(post.id)}`
-        : `random.html?pick=${encodeURIComponent(post.id)}`;
+      : `random.html?pick=${encodeURIComponent(post.id)}`;
     return `
-      <a class="${className} crab-walk-surface" href="${mapHref}" tabindex="-1" aria-hidden="true">
+      <a class="${className} crab-walk-surface" href="${href}" tabindex="-1" aria-hidden="true">
         <img src="${src}" alt="${alt}" loading="lazy" decoding="async"
              onerror="this.closest('.post-cover').classList.add('is-broken')">
       </a>`;

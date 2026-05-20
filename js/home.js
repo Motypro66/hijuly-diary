@@ -49,12 +49,15 @@ function applySiteBranding() {
 function postCard(p, opts = {}) {
   const { featured = false, revealDelay = 0 } = opts;
   const xhs = PU.xhsUrl(p);
-  const mapUrl = `map.html?id=${encodeURIComponent(p.id)}`;
+  const showMap = PU.hasMaps(p);
+  const gmap = showMap ? PU.googleMapsUrl(p) : "";
+  const mapBtn = showMap
+    ? `<a class="btn btn-sm post-link-map" href="${gmap}" target="_blank" rel="noopener noreferrer">📍 ${PU.mapsLinkLabel(p)}</a>`
+    : "";
   const delayAttr = revealDelay ? ` data-reveal-delay="${revealDelay}"` : "";
   const title = p.title || "笔记";
   const hook = PU.hook(p);
   const location = p.location || "";
-  const showMap = (p.lat != null && p.lng != null) || PU.hasMaps(p);
 
   return `
     <article class="post-card reveal${featured ? " post-card--featured" : ""}"${delayAttr}>
@@ -69,7 +72,7 @@ function postCard(p, opts = {}) {
         ${location ? `<p class="post-meta">${location}</p>` : ""}
       </div>
       <div class="post-actions">
-        ${showMap ? `<a class="btn btn-sm post-link-map" href="${mapUrl}">地图</a>` : ""}
+        ${mapBtn}
         <a class="btn btn-sm btn-outline post-link-xhs" href="${xhs}" target="_blank" rel="noopener noreferrer" data-post-id="${p.id}">见原帖</a>
       </div>
     </article>`;
@@ -79,13 +82,14 @@ function renderCategoryChips(posts, active = "all") {
   const el = document.getElementById("category-chips");
   if (!el) return;
 
+  const food = posts.filter((p) => PU.isFoodPost(p));
   const counts = {};
-  posts.forEach((p) => {
+  food.forEach((p) => {
     counts[p.category] = (counts[p.category] || 0) + 1;
   });
 
   const items = [
-    { key: "all", label: "全部", count: posts.length },
+    { key: "all", label: "全部", count: food.length },
     ...Object.entries(TAG_LABELS).map(([key, label]) => ({
       key,
       label,
@@ -97,14 +101,43 @@ function renderCategoryChips(posts, active = "all") {
     .map(
       (x) => `
     <a href="map.html${x.key === "all" ? "" : `?cat=${x.key}`}"
-       class="chip ${active === x.key ? "is-active" : ""}">
+       class="chip nav-to-map ${active === x.key ? "is-active" : ""}">
       ${x.label}<span class="chip-count">${x.count}</span>
     </a>`
     )
     .join("");
 }
 
+function renderRegionChips(posts) {
+  const el = document.getElementById("region-chips");
+  if (!el) return;
+
+  const regions = [
+    { key: "kv", label: "雪隆区" },
+    { key: "jb", label: "新山 JB" },
+    { key: "klang", label: "巴生" },
+    { key: "other", label: "其他" },
+  ];
+
+  const counts = {};
+  posts.filter((p) => PU.isFoodPost(p)).forEach((p) => {
+    const r = p.region || "other";
+    counts[r] = (counts[r] || 0) + 1;
+  });
+
+  el.innerHTML = regions
+    .filter((r) => counts[r.key] > 0)
+    .map(
+      (r) => `
+    <a href="region.html?r=${r.key}" class="chip nav-to-region">
+      ${r.label}<span class="chip-count">${counts[r.key]}</span>
+    </a>`
+    )
+    .join("");
+}
+
 let archiveAll = [];
+let archiveFood = [];
 
 function renderArchive(posts, expanded) {
   const recentEl = document.getElementById("recent-posts");
@@ -158,15 +191,17 @@ async function loadHomePosts() {
     const res = await fetch("data/posts.json");
     if (!res.ok) throw new Error(String(res.status));
     archiveAll = await res.json();
+    archiveFood = archiveAll.filter((p) => PU.isFoodPost(p));
+    const foodPosts = archiveFood;
 
     const statPosts = document.getElementById("stat-posts");
-    if (statPosts) statPosts.textContent = String(archiveAll.length);
+    if (statPosts) statPosts.textContent = String(foodPosts.length);
     if (archiveDesc) {
-      archiveDesc.textContent = `共 ${archiveAll.length} 篇 · 先显示 ${ARCHIVE_INITIAL} 篇 · 点「看更多」浏览全部`;
+      archiveDesc.textContent = `共 ${foodPosts.length} 篇美食 · 先显示 ${ARCHIVE_INITIAL} 篇 · 点「看更多」浏览全部`;
     }
 
     if (featuredEl) {
-      const list = archiveAll.slice(0, 3);
+      const list = foodPosts.slice(0, 3);
       featuredEl.innerHTML = list
         .map((p, i) => postCard(p, { featured: true, revealDelay: i * 70 }))
         .join("");
@@ -174,8 +209,9 @@ async function loadHomePosts() {
       bindPostXhsLinks(featuredEl);
     }
 
+    renderRegionChips(archiveAll);
     renderCategoryChips(archiveAll);
-    renderArchive(archiveAll, false);
+    renderArchive(foodPosts, false);
   } catch {
     const recentEl = document.getElementById("recent-posts");
     if (recentEl) {
@@ -194,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-show-more")?.addEventListener("click", () => {
     const btn = document.getElementById("btn-show-more");
     const expanded = btn?.dataset.expanded === "1";
-    renderArchive(archiveAll, !expanded);
+    renderArchive(archiveFood, !expanded);
     if (!expanded) {
       document.getElementById("archive-more-wrap")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }

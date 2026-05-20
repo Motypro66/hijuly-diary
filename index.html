@@ -15,8 +15,27 @@
   <link rel="stylesheet" href="css/july-mobile.css">
   <link rel="stylesheet" href="css/crab-transition.css">
   <link rel="stylesheet" href="css/xhs-modal.css">
+  <script>
+  (function(){if(sessionStorage.getItem('crabTransition')==='1'){document.documentElement.classList.add('crab-incoming');}})();
+  </script>
 </head>
 <body class="page-home page-july page-v4 page-bear">
+
+<div class="crab-transition" id="crab-transition" aria-hidden="true">
+  <div class="crab-transition__bg"></div>
+  <div class="crab-loader">
+    <svg class="loader-globe" viewBox="-100 -100 200 200" aria-hidden="true">
+      <circle r="80" class="globe-bg"/>
+      <ellipse rx="80" ry="30" class="globe-grid"/>
+      <ellipse rx="80" ry="55" class="globe-grid"/>
+      <ellipse rx="55" ry="80" class="globe-grid"/>
+      <ellipse rx="30" ry="80" class="globe-grid"/>
+      <circle r="80" class="globe-ring"/>
+    </svg>
+    <div class="loader-orbit"><span class="loader-crab" aria-hidden="true">🦀</span></div>
+    <p class="loader-text">小螃蟹绕地球找好吃…</p>
+  </div>
+</div>
 
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
@@ -31,7 +50,7 @@
       <a href="random.html" class="nav-to-random">随机</a>
       <a href="map.html" class="nav-to-map">地图</a>
     </nav>
-    <a href="map.html" class="nav-cta nav-to-map">觅食地图</a>
+    <a href="random.html" class="nav-cta nav-to-random">不懂吃什么？</a>
   </div>
 </header>
 
@@ -48,7 +67,8 @@
           <p class="hero-sub" id="profile-bio-sub">美食 · 好康 · 好物 — 真实探店，帮你抄作业</p>
           <div class="identity-pills" id="identity-pills"></div>
           <div class="hero-actions">
-            <a class="btn btn-primary nav-to-map" href="map.html">打开觅食地图</a>
+            <a class="btn btn-primary nav-to-random" href="random.html">不懂吃什么？</a>
+            <a class="btn btn-ghost nav-to-map" href="map.html">觅食地图</a>
             <a class="btn btn-ghost" id="home-xhs-btn" href="#" target="_blank" rel="noopener">关注小红书</a>
           </div>
           <p class="hero-hint">小螃蟹只在封面图上走路，不挡字 — 戳它聊天 🦀</p>
@@ -107,6 +127,15 @@
         <p class="section-desc">先看清封面 · 左右滑查看更多</p>
       </div>
       <div id="featured-posts" class="picks-grid posts-grid"></div>
+    </div>
+  </section>
+
+  <section class="section-july reveal">
+    <div class="wrap">
+      <p class="section-label">By area</p>
+      <h2 class="section-title">按地区逛</h2>
+      <p class="section-desc">雪隆 · 新山 · 巴生 — 分区域抄作业</p>
+      <div class="chip-row" id="region-chips"></div>
     </div>
   </section>
 

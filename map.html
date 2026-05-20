@@ -16,8 +16,27 @@
   <link rel="stylesheet" href="css/july-mobile.css">
   <link rel="stylesheet" href="css/crab-transition.css">
   <link rel="stylesheet" href="css/xhs-modal.css">
+  <script>
+  (function(){if(sessionStorage.getItem('crabTransition')==='1'){document.documentElement.classList.add('crab-incoming');}})();
+  </script>
 </head>
 <body class="page-map page-july page-v4 page-bear">
+
+<div class="crab-transition" id="crab-transition" aria-hidden="true">
+  <div class="crab-transition__bg"></div>
+  <div class="crab-loader">
+    <svg class="loader-globe" viewBox="-100 -100 200 200" aria-hidden="true">
+      <circle r="80" class="globe-bg"/>
+      <ellipse rx="80" ry="30" class="globe-grid"/>
+      <ellipse rx="80" ry="55" class="globe-grid"/>
+      <ellipse rx="55" ry="80" class="globe-grid"/>
+      <ellipse rx="30" ry="80" class="globe-grid"/>
+      <circle r="80" class="globe-ring"/>
+    </svg>
+    <div class="loader-orbit"><span class="loader-crab" aria-hidden="true">🦀</span></div>
+    <p class="loader-text">小螃蟹绕地球找好吃…</p>
+  </div>
+</div>
 
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
@@ -32,7 +51,7 @@
       <a href="random.html" class="nav-to-random">随机</a>
       <a href="map.html" class="active">地图</a>
     </nav>
-    <a href="random.html" class="nav-cta nav-to-random">随机一帖</a>
+    <a href="random.html" class="nav-cta nav-to-random">不懂吃什么？</a>
   </div>
 </header>
 

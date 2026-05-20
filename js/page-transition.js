@@ -1,53 +1,37 @@
 /**
- * 转场：只保留「网格地球 + 螃蟹绕圈」
+ * 转场：网格地球 + 螃蟹绕圈（无黑屏）
+ * 离开：overlay 淡入 → 跳转
+ * 到达：overlay 已在（sessionStorage）→ 直接淡出，不二次闪现
  */
 (function () {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  function buildOverlay() {
-    if (document.getElementById("crab-transition")) return;
-    document.body.insertAdjacentHTML(
-      "beforeend",
-      `<div class="crab-transition" id="crab-transition" aria-hidden="true">
-        <div class="crab-transition__bg"></div>
-        <div class="crab-loader" id="crab-loader">
-          <svg class="loader-globe" viewBox="-100 -100 200 200" aria-hidden="true">
-            <circle r="80" class="globe-bg"/>
-            <ellipse rx="80" ry="30" class="globe-grid"/>
-            <ellipse rx="80" ry="55" class="globe-grid"/>
-            <ellipse rx="55" ry="80" class="globe-grid"/>
-            <ellipse rx="30" ry="80" class="globe-grid"/>
-            <circle r="80" class="globe-ring"/>
-          </svg>
-          <div class="loader-orbit">
-            <span class="loader-crab" aria-hidden="true">🦀</span>
-          </div>
-          <p class="loader-text">小螃蟹绕地球找好吃…</p>
-        </div>
-      </div>`
-    );
-  }
-
-  buildOverlay();
+  const KEY = "crabTransition";
+  const MIN_MS = 850;
 
   const overlay = document.getElementById("crab-transition");
-  const loader = document.getElementById("crab-loader");
-  const MIN_MS = 900;
+  const loaderText = overlay?.querySelector(".loader-text");
+  if (!overlay) return;
 
-  function show(label) {
-    if (reduceMotion) return;
-    if (label) loader.querySelector(".loader-text").textContent = label;
-    overlay.classList.add("is-active");
-    document.body.classList.add("is-page-leaving");
+  function setLabel(text) {
+    if (loaderText && text) loaderText.textContent = text;
   }
 
-  function hide() {
-    if (reduceMotion) return;
+  function showActive() {
+    overlay.classList.remove("is-fade-out");
+    overlay.classList.add("is-active");
+    overlay.setAttribute("aria-hidden", "false");
+  }
+
+  function fadeOut() {
+    if (reduceMotion) {
+      overlay.classList.remove("is-active", "is-fade-out");
+      return;
+    }
     overlay.classList.add("is-fade-out");
     setTimeout(() => {
       overlay.classList.remove("is-active", "is-fade-out");
-      document.body.classList.remove("is-page-leaving");
-    }, 480);
+      overlay.setAttribute("aria-hidden", "true");
+    }, 520);
   }
 
   function go(href, label) {
@@ -55,7 +39,9 @@
       window.location.href = href;
       return;
     }
-    show(label || "小螃蟹绕地球找好吃…");
+    sessionStorage.setItem(KEY, "1");
+    setLabel(label || "小螃蟹绕地球找好吃…");
+    showActive();
     setTimeout(() => {
       window.location.href = href;
     }, MIN_MS);
@@ -70,31 +56,25 @@
     anchor.addEventListener("click", (e) => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
-      const label = anchor.dataset.transitionLabel || "小螃蟹绕地球找好吃…";
-      go(url, label);
+      go(url, anchor.dataset.transitionLabel || "小螃蟹绕地球找好吃…");
     });
   }
 
   document
-    .querySelectorAll('a[href$=".html"], a.nav-to-map, a.nav-to-home, a.nav-to-random')
+    .querySelectorAll('a[href$=".html"], a.nav-to-map, a.nav-to-home, a.nav-to-random, a.nav-to-region')
     .forEach(bindTransition);
 
-  if (
-    document.body.classList.contains("page-home") ||
-    document.body.classList.contains("page-map") ||
-    document.body.classList.contains("page-random")
-  ) {
-    requestAnimationFrame(() => {
-      show("到了，开吃！");
-      setTimeout(hide, MIN_MS);
-    });
+  const incoming = sessionStorage.getItem(KEY) === "1";
+  if (incoming) {
+    sessionStorage.removeItem(KEY);
+    setLabel("到了，开吃！");
+    showActive();
+    if (reduceMotion) {
+      fadeOut();
+    } else {
+      setTimeout(fadeOut, 280);
+    }
   }
 
-  window.CrabTransition = {
-    show,
-    hide,
-    go,
-    showLoader: show,
-    hideLoader: hide,
-  };
+  window.CrabTransition = { show: showActive, hide: fadeOut, go };
 })();
