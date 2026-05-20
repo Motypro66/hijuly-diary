@@ -1,0 +1,356 @@
+/* v4.2 · Bike Bear 灵感：大标题、少边框、留白、编辑感 */
+
+.page-v4.page-bear {
+  --section-pad: clamp(3rem, 8vw, 6rem);
+}
+
+/* 跑马灯 */
+.bear-ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--border);
+  background: var(--ink);
+  color: #fff;
+  padding: 0.65rem 0;
+}
+
+.bear-ticker__track {
+  display: flex;
+  width: max-content;
+  animation: ticker 28s linear infinite;
+  gap: 2.5rem;
+  padding-left: 2.5rem;
+}
+
+.bear-ticker__track span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes ticker {
+  to { transform: translateX(-50%); }
+}
+
+/* Hero：全宽、大字、少框 */
+.page-bear .hero-july {
+  min-height: min(88vh, 720px);
+  display: flex;
+  align-items: center;
+  padding-bottom: var(--section-pad);
+}
+
+.page-bear .hero-grid {
+  align-items: end;
+}
+
+.page-bear .display {
+  font-size: clamp(2.5rem, 10vw, 4.5rem);
+  line-height: 1.05;
+}
+
+.page-bear .hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+  justify-content: flex-start;
+}
+
+.page-bear .stat-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  text-align: left;
+  min-width: 4.5rem;
+}
+
+.page-bear .stat-val {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+}
+
+.page-bear .stat-lbl {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* 步骤：无框，只数字 */
+.page-bear .steps-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .page-bear .steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+}
+
+.page-bear .step-card {
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+.page-bear .step-num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+/* 区块标题：编辑大标题 */
+.page-bear .section-picks,
+.page-bear .section-archive {
+  padding: var(--section-pad) 0;
+}
+
+.page-bear .section-title {
+  font-size: clamp(2rem, 6vw, 3.25rem);
+  max-width: 14ch;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.page-bear .section-desc {
+  font-size: 1.05rem;
+  max-width: 32em;
+}
+
+/* 笔记卡：无边框，图主导（像作品集） */
+.page-bear .post-card {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  gap: 0.75rem;
+}
+
+.page-bear .post-card:hover {
+  transform: none;
+}
+
+.page-bear .post-cover {
+  border-radius: 4px;
+  aspect-ratio: 3 / 4;
+  box-shadow: 0 20px 50px rgba(28, 43, 51, 0.12);
+  transition: transform 0.4s ease, box-shadow 0.4s;
+}
+
+.page-bear .post-card:hover .post-cover {
+  transform: scale(1.02);
+  box-shadow: 0 28px 60px rgba(28, 43, 51, 0.16);
+}
+
+.page-bear .post-info {
+  padding: 0.25rem 0 0;
+}
+
+.page-bear .post-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+}
+
+/* 精选：横向滑动画廊（手机不挤） */
+.page-bear .picks-grid.posts-grid {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1.25rem;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.page-bear .picks-grid.posts-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.page-bear .picks-grid .post-card {
+  flex: 0 0 min(78vw, 280px);
+  scroll-snap-align: start;
+}
+
+@media (min-width: 900px) {
+  .page-bear .picks-grid.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: visible;
+  }
+
+  .page-bear .picks-grid .post-card {
+    flex: unset;
+  }
+}
+
+/* 全部笔记：手机单列宽松 */
+.page-bear .notes-grid.posts-grid {
+  gap: 2.5rem 1.25rem;
+}
+
+@media (max-width: 639px) {
+  .page-bear .notes-grid.posts-grid {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+  }
+
+  .page-bear .wrap {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .page-bear .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-bear .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .page-bear .site-nav a {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.85rem;
+  }
+
+  .page-bear .chip {
+    font-size: 0.88rem;
+    padding: 0.55rem 1rem;
+  }
+}
+
+/* 看更多 */
+.archive-more-wrap {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.btn-show-more {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-show-more:hover {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* 转场 */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--ocean-deep);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s ease;
+}
+
+.page-transition-overlay.is-active,
+.page-transition-overlay.is-entering {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.page-transition-overlay.is-entering {
+  animation: fade-out-enter 0.55s ease forwards;
+}
+
+@keyframes fade-out-enter {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* 地图弹窗 */
+.leaflet-popup-content .popup-box {
+  margin: 0;
+  min-width: 200px;
+}
+
+.leaflet-popup-content .popup-box h3 {
+  font-size: 0.95rem;
+  margin: 0.35rem 0;
+  line-height: 1.35;
+}
+
+.leaflet-popup-content .popup-loc {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0 0 0.65rem;
+}
+
+.popup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.popup-link,
+.popup-detail {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  text-align: center;
+  padding: 0.45rem;
+  border-radius: 8px;
+}
+
+.popup-xhs {
+  background: var(--coral, #ff5c4d);
+  color: #fff !important;
+}
+
+.popup-maps {
+  background: var(--ocean-tint, #e8f4f6);
+  color: var(--ocean-deep, #1c4552) !important;
+}
+
+.popup-detail {
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+}
+
+.page-v4 .detail-maps {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ocean);
+  text-decoration: none !important;
+}
+
+.page-v4 .detail-maps[hidden] {
+  display: none;
+}
+
+.page-v4 #detail-price[hidden] {
+  display: none;
+}
+
+.page-v4 .detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bear-ticker__track {
+    animation: none;
+  }
+}

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小螃蟹看世界 · 空调17度</title>
+  <meta name="description" content="小螃蟹看世界 — 马来西亚美食好康好物，地图抄作业 + 小红书原文。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/july.css">
+  <link rel="stylesheet" href="css/july-v4.css">
+  <link rel="stylesheet" href="css/july-bear.css">
+</head>
+<body class="page-home page-july page-v4 page-bear">
+
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<div class="bear-ticker" aria-hidden="true">
+  <div class="bear-ticker__track">
+    <span>美食 · 好康 · 好物</span>
+    <span>小螃蟹看世界</span>
+    <span>马来西亚探店</span>
+    <span>HiJuly_IP</span>
+    <span>跟着地图抄作业</span>
+    <span>美食 · 好康 · 好物</span>
+    <span>小螃蟹看世界</span>
+    <span>马来西亚探店</span>
+    <span>HiJuly_IP</span>
+    <span>跟着地图抄作业</span>
+  </div>
+</div>
+
+<header class="site-bar site-bar-july" id="site-header">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="site-logo site-logo-link" data-site-name>小螃蟹<span>看世界</span></a>
+    <span class="logo-sub">空调17度</span>
+    <nav class="site-nav">
+      <a href="index.html" class="active">首页</a>
+      <a href="map.html" class="nav-to-map">觅食地图</a>
+      <a id="nav-xhs" class="nav-xhs" href="#" target="_blank" rel="noopener">小红书</a>
+    </nav>
+  </div>
+</header>
+
+<main class="home-main">
+  <section class="hero-july">
+    <div class="hero-blob hero-blob-a" data-parallax="0.1" aria-hidden="true"></div>
+    <div class="hero-blob hero-blob-b" data-parallax="0.06" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="hero-grid reveal">
+        <div class="hero-copy">
+          <p class="hero-eyebrow"><span id="series-name">小螃蟹看世界</span> · @HiJuly_IP</p>
+          <h1 class="display">马来西亚<br><em>好吃都帮你记好了</em></h1>
+          <p class="hero-lead" id="profile-bio">// 🇲🇾 // 小螃蟹努力看世界🛸</p>
+          <p class="hero-sub" id="profile-bio-sub">美食 · 好康 · 好物 — 真实探店，帮你抄作业</p>
+          <div class="identity-pills" id="identity-pills"></div>
+          <div class="hero-actions">
+            <a class="btn btn-primary nav-to-map" href="map.html">打开觅食地图</a>
+            <a class="btn btn-ghost" id="home-xhs-btn" href="#" target="_blank" rel="noopener">关注小红书</a>
+          </div>
+          <p class="hero-hint">小螃蟹只在封面图上走路，不挡字 — 戳它聊天 🦀</p>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-val" id="stat-likes">12.7K</span>
+            <span class="stat-lbl">赞藏</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="stat-followers">910</span>
+            <span class="stat-lbl">粉丝</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="stat-posts">10</span>
+            <span class="stat-lbl">笔记</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="stat-following">541</span>
+            <span class="stat-lbl">关注</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-steps reveal">
+    <div class="wrap">
+      <p class="section-label">怎么用</p>
+      <h2 class="section-title">三步跟着小螃蟹吃</h2>
+      <div class="steps-grid">
+        <article class="step-card">
+          <span class="step-num">1</span>
+          <h3>逛精选</h3>
+          <p>先看最值得去的店，少踩雷。</p>
+        </article>
+        <article class="step-card">
+          <span class="step-num">2</span>
+          <h3>开地图</h3>
+          <p>全马标点，按地区找吃的。</p>
+        </article>
+        <article class="step-card">
+          <span class="step-num">3</span>
+          <h3>看原文</h3>
+          <p>完整图文、价钱在小红书。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-picks reveal">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="section-label">Editor's pick</p>
+        <h2 class="section-title">精选笔记</h2>
+        <p class="section-desc">先看清封面 · 左右滑查看更多</p>
+      </div>
+      <div id="featured-posts" class="picks-grid posts-grid"></div>
+    </div>
+  </section>
+
+  <section class="section-july reveal">
+    <div class="wrap">
+      <p class="section-label">Browse</p>
+      <h2 class="section-title">按类型逛</h2>
+      <div class="chip-row" id="category-chips"></div>
+    </div>
+  </section>
+
+  <section class="section-archive section-july reveal">
+    <div class="wrap">
+      <div class="section-head row">
+        <div>
+          <p class="section-label">Archive</p>
+          <h2 class="section-title">全部笔记</h2>
+          <p class="section-desc" id="archive-desc">加载中…</p>
+        </div>
+        <a href="map.html" class="link-arrow nav-to-map">地图上看 →</a>
+      </div>
+      <div id="recent-posts" class="notes-grid posts-grid"></div>
+      <div id="archive-more-wrap" class="archive-more-wrap" hidden>
+        <button type="button" class="btn-show-more" id="btn-show-more">看更多</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band reveal">
+    <div class="wrap cta-inner">
+      <h2>把她的足迹收进地图</h2>
+      <p>标点看贴士 · 见原帖 · Google 地图导航</p>
+      <a class="btn btn-primary nav-to-map" href="map.html">现在打开地图</a>
+    </div>
+  </section>
+</main>
+
+<button type="button" class="crab-pet" id="crab-pet" aria-label="小螃蟹，点击对话">
+  <img src="assets/brand/crab.svg" width="52" height="42" alt="">
+  <span class="crab-bubble" id="crab-bubble" role="status" hidden></span>
+</button>
+
+<footer class="site-footer site-footer-july reveal">
+  <p><a href="index.html" class="footer-home" data-site-name>小螃蟹看世界</a> · 空调17度</p>
+  <p class="footer-sub">档案站 · <a id="footer-xhs" href="#" target="_blank" rel="noopener">@空调17度 小红书</a></p>
+  <p class="footer-version" id="site-version"></p>
+</footer>
+
+<script src="js/site-config.js"></script>
+<script src="js/post-utils.js"></script>
+<script src="js/page-transition.js"></script>
+<script src="js/home.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/crab-pet.js"></script>
+<script src="js/version.js"></script>
+<script src="js/scroll-reveal.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+deploy/
+history/
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>觅食地图 · 小螃蟹看世界</title>
+  <meta name="description" content="空调17度 — 马来西亚美食好康好物地图。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/july.css">
+  <link rel="stylesheet" href="css/july-v4.css">
+  <link rel="stylesheet" href="css/july-bear.css">
+</head>
+<body class="page-map page-july page-v4 page-bear">
+
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<header class="site-bar site-bar-july" id="site-header">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="site-logo site-logo-link" data-site-name>小螃蟹<span>看世界</span></a>
+    <nav class="site-nav">
+      <a href="index.html">首页</a>
+      <a href="map.html" class="active">觅食地图</a>
+      <a id="nav-xhs" class="nav-xhs" href="#" target="_blank" rel="noopener">小红书</a>
+    </nav>
+  </div>
+</header>
+
+<div class="map-hero-bar">
+  <h1>小螃蟹觅食地图</h1>
+  <p>点标点 · 见原帖 · Google 地图导航</p>
+</div>
+
+<aside id="post-panel" class="post-panel" aria-label="笔记列表">
+  <div class="panel-head">
+    <h2>笔记足迹</h2>
+  </div>
+  <div id="post-list" class="panel-list"></div>
+</aside>
+
+<div id="map" role="application" aria-label="马来西亚觅食地图"></div>
+
+<div class="map-toolbar">
+  <span id="map-stat" class="map-stat">加载中…</span>
+  <div class="filter-pills">
+    <button type="button" class="filter-pill active" data-filter="all">全部</button>
+    <button type="button" class="filter-pill" data-filter="restaurant">餐厅</button>
+    <button type="button" class="filter-pill" data-filter="cafe">Cafe</button>
+    <button type="button" class="filter-pill" data-filter="hawker">路边摊</button>
+    <button type="button" class="filter-pill" data-filter="haokang">好康</button>
+    <button type="button" class="filter-pill" data-filter="haowu">好物</button>
+  </div>
+  <button type="button" id="btn-list" class="btn-list-toggle">列表</button>
+</div>
+
+<aside id="detail-sheet" class="detail-sheet" aria-label="笔记详情">
+  <button type="button" id="sheet-close" class="sheet-close" aria-label="关闭">×</button>
+  <div class="sheet-handle"></div>
+  <div id="detail-cover" class="detail-cover" hidden></div>
+  <span id="detail-tag" class="post-tag"></span>
+  <h2 id="detail-title"></h2>
+  <p id="detail-loc" class="detail-loc"></p>
+  <p id="detail-price" class="detail-price" hidden></p>
+  <p id="detail-body" class="detail-body"></p>
+  <div id="detail-tip" class="detail-tip" hidden>
+    <strong data-tip-label>小螃蟹贴士</strong>
+    <span class="tip-text"></span>
+  </div>
+  <div class="detail-actions">
+    <a id="detail-maps" class="detail-maps" href="#" target="_blank" rel="noopener noreferrer" hidden></a>
+    <a id="detail-xhs" class="detail-btn secondary" href="#" target="_blank" rel="noopener noreferrer">
+      见原帖 →
+    </a>
+    <p class="detail-actions-note">本站为档案摘要 · 以原帖为准</p>
+  </div>
+</aside>
+
+<script src="js/site-config.js"></script>
+<script src="js/post-utils.js"></script>
+<script src="js/page-transition.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/map.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/version.js"></script>
+</body>
+</html>

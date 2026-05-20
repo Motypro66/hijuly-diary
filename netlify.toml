@@ -1,0 +1,8 @@
+# Netlify：发布当前目录根下的所有静态文件
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/map"
+  to = "/map.html"
+  status = 200
