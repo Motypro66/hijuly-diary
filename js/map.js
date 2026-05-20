@@ -139,7 +139,7 @@ function popupHtml(p) {
   const src = PU?.imageSrc(p);
   const alt = (p.title || "笔记封面").replace(/"/g, "&quot;");
   const coverHtml = src
-    ? `<div class="popup-cover"><img src="${src}" alt="${alt}" loading="lazy" decoding="async"></div>`
+    ? `<div class="popup-cover"><img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain"></div>`
     : "";
 
   return `<div class="popup-box${src ? " popup-box--has-cover" : ""}">
@@ -185,7 +185,11 @@ function renderMarkers() {
 
     const marker = L.marker([p.lat, p.lng], { icon })
       .addTo(map)
-      .bindPopup(popupHtml(p));
+      .bindPopup(popupHtml(p), {
+        maxWidth: 252,
+        minWidth: 200,
+        className: "july-map-popup",
+      });
 
     marker.on("popupopen", bindPopupActions);
 

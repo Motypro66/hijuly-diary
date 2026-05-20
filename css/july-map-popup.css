@@ -1,0 +1,113 @@
+/**
+ * 地图标点弹窗 — 图片完整显示且不溢出卡片
+ */
+.leaflet-popup.july-map-popup .leaflet-popup-content-wrapper {
+  max-width: 252px !important;
+  overflow: hidden !important;
+  border-radius: 12px !important;
+}
+
+.leaflet-popup.july-map-popup .leaflet-popup-content {
+  width: 252px !important;
+  max-width: 252px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.leaflet-popup.july-map-popup .popup-box {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.leaflet-popup.july-map-popup .popup-box--has-cover {
+  padding: 0;
+}
+
+.leaflet-popup.july-map-popup .popup-inner {
+  padding: 0.65rem 0.75rem 0.75rem;
+}
+
+.leaflet-popup.july-map-popup .popup-cover {
+  width: 100%;
+  height: 96px;
+  max-height: 96px;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border-radius: 12px 12px 0 0;
+  box-sizing: border-box;
+}
+
+.leaflet-popup.july-map-popup .popup-cover img {
+  display: block;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain;
+  object-position: center;
+}
+
+.leaflet-popup.july-map-popup .popup-box h3 {
+  font-size: 0.82rem;
+  margin: 0.3rem 0 0.15rem;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.leaflet-popup.july-map-popup .popup-loc {
+  font-size: 0.72rem;
+  margin: 0 0 0.45rem;
+}
+
+.leaflet-popup.july-map-popup .popup-actions {
+  gap: 0.3rem;
+}
+
+.leaflet-popup.july-map-popup .popup-link {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.45rem;
+}
+
+@media (max-width: 899px) {
+  .leaflet-popup.july-map-popup .leaflet-popup-content-wrapper {
+    max-width: min(220px, 72vw) !important;
+  }
+
+  .leaflet-popup.july-map-popup .leaflet-popup-content {
+    width: min(220px, 72vw) !important;
+    max-width: min(220px, 72vw) !important;
+  }
+
+  .leaflet-popup.july-map-popup .popup-cover {
+    height: 84px;
+    max-height: 84px;
+  }
+
+  .leaflet-popup.july-map-popup .popup-inner {
+    padding: 0.5rem 0.6rem 0.6rem;
+  }
+
+  .leaflet-popup.july-map-popup .popup-box h3 {
+    font-size: 0.75rem;
+  }
+
+  .leaflet-popup.july-map-popup .popup-loc {
+    font-size: 0.65rem;
+  }
+
+  .leaflet-popup.july-map-popup .popup-link {
+    font-size: 0.68rem;
+    padding: 0.28rem 0.38rem;
+  }
+}

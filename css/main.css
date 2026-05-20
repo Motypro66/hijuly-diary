@@ -664,7 +664,12 @@ a:hover { text-decoration: underline; }
   padding: 0 !important;
 }
 
-.leaflet-popup-content { margin: 0 !important; min-width: 200px; }
+.leaflet-popup-content {
+  margin: 0 !important;
+  min-width: 200px;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
 .leaflet-popup-tip { background: var(--card) !important; }
 
 .popup-box { padding: 0.9rem 1rem; }
