@@ -188,15 +188,15 @@
   }
 }
 
-/* 全部笔记：手机单列宽松 */
+/* 全部笔记：桌面大间距；手机 2 列在 july-archive-mobile.css */
 .page-bear .notes-grid.posts-grid {
   gap: 2.5rem 1.25rem;
 }
 
-@media (max-width: 639px) {
+@media (max-width: 899px) {
   .page-bear .notes-grid.posts-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.65rem 0.5rem;
+    gap: 0.45rem 0.4rem;
   }
 
   .page-bear .wrap {
