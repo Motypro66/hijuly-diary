@@ -69,6 +69,10 @@ function initMap() {
 
   renderAll();
 
+  map.on("click", () => {
+    if (isMobileMap()) closePanel();
+  });
+
   const mapped = getMappable();
   if (mapped.length > 0) {
     const bounds = L.latLngBounds(mapped.map((p) => [p.lat, p.lng]));
@@ -139,7 +143,7 @@ function popupHtml(p) {
   const src = PU?.imageSrc(p);
   const alt = (p.title || "笔记封面").replace(/"/g, "&quot;");
   const coverHtml = src
-    ? `<div class="popup-cover"><img src="${src}" alt="${alt}" loading="lazy" decoding="async" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain"></div>`
+    ? `<div class="popup-cover"><img src="${src}" alt="${alt}" loading="lazy" decoding="async"></div>`
     : "";
 
   return `<div class="popup-box${src ? " popup-box--has-cover" : ""}">
@@ -166,6 +170,61 @@ function bindPopupActions() {
   });
 }
 
+/** 按图片比例调整弹窗尺寸，完整显示封面 */
+function fitPopupToImage(popupEl) {
+  if (!popupEl) return;
+  const img = popupEl.querySelector(".popup-cover img");
+  const cover = popupEl.querySelector(".popup-cover");
+  if (!img || !cover) return;
+
+  const apply = () => {
+    const nw = img.naturalWidth;
+    const nh = img.naturalHeight;
+    if (!nw || !nh) return;
+
+    const mobile = window.innerWidth < 900;
+    const maxW = mobile ? Math.min(240, window.innerWidth * 0.72 - 16) : 280;
+    const maxH = mobile ? 200 : 260;
+    const ratio = nw / nh;
+
+    let w = maxW;
+    let h = Math.round(w / ratio);
+    if (h > maxH) {
+      h = maxH;
+      w = Math.round(h * ratio);
+    }
+
+    const cardW = Math.max(w, 200);
+    cover.style.width = `${w}px`;
+    cover.style.height = `${h}px`;
+    cover.style.aspectRatio = `${nw} / ${nh}`;
+
+    const content = popupEl.closest(".leaflet-popup-content") || popupEl;
+    const wrapper = content?.closest(".leaflet-popup-content-wrapper");
+    [content, wrapper].forEach((el) => {
+      if (!el) return;
+      el.style.width = `${cardW}px`;
+      el.style.maxWidth = `${cardW}px`;
+    });
+
+    map?.invalidateSize();
+  };
+
+  if (img.complete && img.naturalWidth) apply();
+  else {
+    img.addEventListener("load", apply, { once: true });
+    img.addEventListener("error", () => {
+      cover.style.display = "none";
+    }, { once: true });
+  }
+}
+
+function onPopupOpen(e) {
+  bindPopupActions();
+  const el = e.popup?.getElement?.();
+  if (el) fitPopupToImage(el);
+}
+
 function renderMarkers() {
   markers.forEach((m) => map.removeLayer(m));
   markers = [];
@@ -186,12 +245,12 @@ function renderMarkers() {
     const marker = L.marker([p.lat, p.lng], { icon })
       .addTo(map)
       .bindPopup(popupHtml(p), {
-        maxWidth: 252,
+        maxWidth: 300,
         minWidth: 200,
         className: "july-map-popup",
       });
 
-    marker.on("popupopen", bindPopupActions);
+    marker.on("popupopen", onPopupOpen);
 
     marker.on("click", () => selectPost(p.id));
     markers.push(marker);
@@ -221,7 +280,29 @@ function selectPost(id, opts = {}) {
   }
 
   if (!isDesktop) {
-    document.getElementById("post-panel")?.classList.remove("open");
+    closePanel();
+  }
+}
+
+function isMobileMap() {
+  return window.innerWidth < 900;
+}
+
+function openPanel() {
+  document.getElementById("post-panel")?.classList.add("open");
+  const backdrop = document.getElementById("panel-backdrop");
+  if (backdrop && isMobileMap()) {
+    backdrop.classList.add("is-open");
+    backdrop.setAttribute("aria-hidden", "false");
+  }
+}
+
+function closePanel() {
+  document.getElementById("post-panel")?.classList.remove("open");
+  const backdrop = document.getElementById("panel-backdrop");
+  if (backdrop) {
+    backdrop.classList.remove("is-open");
+    backdrop.setAttribute("aria-hidden", "true");
   }
 }
 
@@ -338,7 +419,9 @@ function updateStat() {
 }
 
 function togglePanel() {
-  document.getElementById("post-panel")?.classList.toggle("open");
+  const panel = document.getElementById("post-panel");
+  if (panel?.classList.contains("open")) closePanel();
+  else openPanel();
 }
 
 function setupUI() {
@@ -348,6 +431,7 @@ function setupUI() {
 
   document.getElementById("btn-list")?.addEventListener("click", togglePanel);
   document.getElementById("sheet-close")?.addEventListener("click", closeDetail);
+  document.getElementById("panel-backdrop")?.addEventListener("click", closePanel);
 
   if (window.innerWidth >= 900) {
     document.getElementById("post-panel")?.classList.remove("collapsed");

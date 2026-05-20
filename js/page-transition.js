@@ -72,5 +72,19 @@
     document.documentElement.classList.remove("crab-incoming");
   }
 
-  window.CrabTransition = { show: showActive, hide: fadeOut, go };
+  /** 离开页面前收起转场，避免手机「返回」卡在螃蟹画面（bfcache） */
+  function clearTransition() {
+    sessionStorage.removeItem(KEY);
+    overlay.classList.remove("is-active", "is-fade-out");
+    overlay.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("crab-incoming");
+  }
+
+  window.addEventListener("pagehide", clearTransition);
+
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) clearTransition();
+  });
+
+  window.CrabTransition = { show: showActive, hide: fadeOut, go, clear: clearTransition };
 })();

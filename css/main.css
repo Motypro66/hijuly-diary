@@ -490,6 +490,29 @@ a:hover { text-decoration: underline; }
 
 .post-panel.open { transform: translateX(0); }
 
+/* 手机列表遮罩：点外面关闭 */
+.panel-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 899;
+  background: rgba(28, 43, 51, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.panel-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 899px) {
+  .panel-backdrop {
+    display: block;
+  }
+}
+
 .panel-head {
   padding: 1rem 1.15rem;
   border-bottom: 1px solid var(--border);

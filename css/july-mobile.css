@@ -277,20 +277,12 @@
 
   /* 地图弹窗：手机用小卡，不叠大详情层 */
   .leaflet-popup-content-wrapper {
-    max-width: min(240px, 68vw) !important;
+    max-width: min(260px, 72vw) !important;
   }
 
   .leaflet-popup-content .popup-box {
     min-width: 0;
     max-width: 100%;
-  }
-
-  .popup-cover {
-    max-height: 110px;
-  }
-
-  .popup-cover img {
-    max-height: 110px;
   }
 
   .leaflet-popup-content .popup-inner {

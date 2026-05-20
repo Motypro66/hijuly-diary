@@ -1,15 +1,17 @@
 /**
- * 地图标点弹窗 — 图片完整显示且不溢出卡片
+ * 地图标点弹窗 — 按图片比例自适应，完整显示不溢出
  */
 .leaflet-popup.july-map-popup .leaflet-popup-content-wrapper {
-  max-width: 252px !important;
+  max-width: 300px !important;
+  width: auto !important;
   overflow: hidden !important;
   border-radius: 12px !important;
 }
 
 .leaflet-popup.july-map-popup .leaflet-popup-content {
-  width: 252px !important;
-  max-width: 252px !important;
+  width: auto !important;
+  max-width: 300px !important;
+  min-width: 200px !important;
   margin: 0 !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
@@ -32,10 +34,7 @@
 }
 
 .leaflet-popup.july-map-popup .popup-cover {
-  width: 100%;
-  height: 96px;
-  max-height: 96px;
-  min-height: 0;
+  margin: 0 auto;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -43,14 +42,13 @@
   background: #f1f5f9;
   border-radius: 12px 12px 0 0;
   box-sizing: border-box;
+  max-width: 100%;
 }
 
 .leaflet-popup.july-map-popup .popup-cover img {
   display: block;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  width: auto !important;
-  height: auto !important;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   object-position: center;
 }
@@ -81,17 +79,11 @@
 
 @media (max-width: 899px) {
   .leaflet-popup.july-map-popup .leaflet-popup-content-wrapper {
-    max-width: min(220px, 72vw) !important;
+    max-width: min(260px, 72vw) !important;
   }
 
   .leaflet-popup.july-map-popup .leaflet-popup-content {
-    width: min(220px, 72vw) !important;
-    max-width: min(220px, 72vw) !important;
-  }
-
-  .leaflet-popup.july-map-popup .popup-cover {
-    height: 84px;
-    max-height: 84px;
+    max-width: min(260px, 72vw) !important;
   }
 
   .leaflet-popup.july-map-popup .popup-inner {
