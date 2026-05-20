@@ -39,8 +39,9 @@ async function loadPosts() {
 }
 
 function getFiltered() {
-  if (activeFilter === "all") return POSTS;
-  return POSTS.filter((p) => p.category === activeFilter);
+  const withCoords = POSTS.filter((p) => p.lat != null && p.lng != null && !p.placeholder);
+  if (activeFilter === "all") return withCoords;
+  return withCoords.filter((p) => p.category === activeFilter);
 }
 
 function initMap() {
@@ -57,8 +58,9 @@ function initMap() {
 
   renderAll();
 
-  if (POSTS.length > 0) {
-    const bounds = L.latLngBounds(POSTS.map((p) => [p.lat, p.lng]));
+  const mapped = POSTS.filter((p) => p.lat != null && p.lng != null && !p.placeholder);
+  if (mapped.length > 0) {
+    const bounds = L.latLngBounds(mapped.map((p) => [p.lat, p.lng]));
     map.fitBounds(bounds.pad(0.15));
   }
 }
@@ -143,14 +145,26 @@ function renderMarkers() {
         `<div class="popup-box">
           <span class="post-tag tag-${p.category}">${TAG_LABELS[p.category] || ""}</span>
           <h3>${p.title}</h3>
-          <p class="popup-loc">${p.location}</p>
+          <p class="popup-loc">${p.location || ""}</p>
           <div class="popup-actions">
             ${gmapBtn}
-            <a class="popup-link popup-xhs" href="${xhs}" target="_blank" rel="noopener noreferrer">见原帖 →</a>
-            <button type="button" class="popup-detail" onclick="window.selectPost('${p.id}')">详情</button>
+            <button type="button" class="popup-link popup-xhs popup-xhs-btn" data-xhs-id="${p.id}">见原帖 →</button>
+            <button type="button" class="popup-detail" data-detail-id="${p.id}">详情</button>
           </div>
         </div>`
       );
+
+    marker.on("popupopen", () => {
+      document.querySelectorAll(".popup-xhs-btn").forEach((b) => {
+        b.onclick = () => {
+          const post = POSTS.find((x) => x.id === b.dataset.xhsId);
+          if (post && PU) PU.openXhs(post);
+        };
+      });
+      document.querySelectorAll(".popup-detail").forEach((b) => {
+        b.onclick = () => window.selectPost(b.dataset.detailId);
+      });
+    });
 
     marker.on("click", () => selectPost(p.id));
     markers.push(marker);
@@ -228,7 +242,8 @@ function showDetail(post) {
       link.textContent = "见原帖 →";
       link.onclick = (e) => {
         e.preventDefault();
-        window.open(url, "_blank", "noopener,noreferrer");
+        if (PU && PU.openXhs) PU.openXhs(post);
+        else window.open(url, "_blank", "noopener,noreferrer");
       };
     } else {
       link.hidden = true;

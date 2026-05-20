@@ -224,3 +224,95 @@ body.is-page-leaving {
 .page-v4 .detail-maps.is-named::before {
   content: "📍 ";
 }
+
+/* ── 立体卡片 + 圆角（不要菱角） ── */
+.page-bear .post-card {
+  border-radius: 22px;
+  background: var(--bg-elevated, #fff);
+  padding: 0.55rem 0.55rem 0.65rem;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 10px 22px -8px rgba(28, 43, 51, 0.18),
+    0 24px 48px -18px rgba(28, 43, 51, 0.22);
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateZ(0);
+}
+
+.page-bear .post-card:hover {
+  transform: translateY(-6px) rotate(-0.4deg);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7) inset,
+    0 18px 30px -12px rgba(28, 43, 51, 0.22),
+    0 40px 70px -22px rgba(255, 92, 77, 0.28);
+}
+
+.page-bear .post-card .post-cover {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.page-bear .post-card .post-info {
+  padding: 0.55rem 0.55rem 0;
+}
+
+.page-bear .post-card .post-actions {
+  padding: 0.55rem 0.55rem 0;
+}
+
+.page-bear .post-card.post-card--placeholder {
+  background: linear-gradient(180deg, #fff 0%, var(--sand, #f5e6d3) 100%);
+}
+
+.page-bear .post-card.post-card--placeholder .post-title {
+  color: var(--ink-secondary, #4a5f6b);
+  font-style: italic;
+}
+
+.page-bear .post-meta--quiet {
+  color: var(--ink-tertiary, #7a8f99);
+  font-style: italic;
+}
+
+/* 全站去菱角 */
+.page-v4 .btn,
+.page-v4 .btn-sm,
+.page-v4 .chip,
+.page-v4 .filter-pill,
+.page-v4 .post-tag,
+.page-v4 .identity-pill,
+.page-v4 .logo-sub,
+.page-v4 .stat-card,
+.page-v4 .step-card,
+.page-v4 .detail-sheet,
+.page-v4 .panel-head,
+.page-v4 .map-toolbar,
+.page-v4 .leaflet-popup-content-wrapper {
+  border-radius: 18px !important;
+}
+
+.page-v4 .btn,
+.page-v4 .btn-sm,
+.page-v4 .filter-pill,
+.page-v4 .chip,
+.page-v4 .post-tag {
+  border-radius: 999px !important;
+}
+
+@media (max-width: 639px) {
+  .page-bear .notes-grid .post-card {
+    border-radius: 18px;
+    padding: 0.35rem 0.35rem 0.5rem;
+    box-shadow:
+      0 6px 14px -6px rgba(28, 43, 51, 0.18),
+      0 18px 34px -16px rgba(28, 43, 51, 0.2);
+  }
+  .page-bear .notes-grid .post-card:hover {
+    transform: none;
+  }
+  .page-bear .notes-grid .post-cover {
+    border-radius: 12px;
+  }
+}
+
