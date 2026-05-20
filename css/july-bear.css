@@ -195,8 +195,8 @@
 
 @media (max-width: 639px) {
   .page-bear .notes-grid.posts-grid {
-    grid-template-columns: 1fr;
-    gap: 2.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem 0.5rem;
   }
 
   .page-bear .wrap {

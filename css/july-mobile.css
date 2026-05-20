@@ -180,46 +180,61 @@
     flex: 0 0 min(72vw, 240px);
   }
 
-  /* 全部笔记：改回单列，和电脑一样「一张一张看」 */
+  /* 全部笔记：2 列紧凑，一屏约 4 张 */
   .page-bear .notes-grid.posts-grid {
-    grid-template-columns: 1fr;
-    gap: 1.35rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem 0.5rem;
   }
 
   .page-bear .notes-grid .post-card {
-    padding: 0.65rem;
-    border-radius: 20px;
+    padding: 0.35rem;
+    border-radius: 14px;
+    gap: 0.35rem;
   }
 
   .page-bear .notes-grid .post-cover {
-    border-radius: 14px;
+    border-radius: 10px;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 4px 12px rgba(28, 43, 51, 0.1);
   }
 
   .page-bear .notes-grid .post-title {
-    font-size: 0.92rem;
-  }
-
-  .page-bear .notes-grid .post-hook {
-    display: block;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
+    line-height: 1.35;
     -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
+  .page-bear .notes-grid .post-hook,
   .page-bear .notes-grid .post-meta {
-    font-size: 0.75rem;
+    display: none;
+  }
+
+  .page-bear .notes-grid .post-tags .post-tag {
+    font-size: 0.55rem;
+    padding: 0.12rem 0.35rem;
+  }
+
+  .page-bear .notes-grid .pick-badge {
+    display: none;
   }
 
   .page-bear .notes-grid .post-actions {
-    flex-direction: row;
-    gap: 0.45rem;
-    padding-top: 0.35rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 0.2rem;
   }
 
   .page-bear .notes-grid .post-actions .btn-sm {
-    width: auto;
-    flex: 1;
-    font-size: 0.78rem;
-    padding: 0.45rem 0.65rem;
+    width: 100%;
+    flex: unset;
+    font-size: 0.62rem;
+    padding: 0.3rem 0.35rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .page-bear .chip-row {
