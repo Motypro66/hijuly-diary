@@ -6,7 +6,7 @@ window.PostUtils = {
   },
 
   hook(post) {
-    return post.hook || post.excerpt || "";
+    return post.hook || post.excerpt?.split("\n")[0] || "";
   },
 
   xhsNoteId(post) {
@@ -16,7 +16,6 @@ window.PostUtils = {
     return m ? m[1] : "";
   },
 
-  /** 带 xsec_token 的完整 XHS 链接（更高几率不被拦截） */
   xhsUrl(post) {
     if (post.xhsLink && post.xhsLink.includes("xsec_token=")) return post.xhsLink;
     const id = this.xhsNoteId(post);
@@ -28,28 +27,25 @@ window.PostUtils = {
     return url;
   },
 
-  /** Google 地图搜索词：placeName 优先；否则 location；否则 lat,lng */
+  /** Google 地图：只用帖子里的完整地址（address / mapsQuery），没有就不显示 */
   mapsSearchQuery(post) {
+    if (post.address) return post.address;
     if (post.mapsQuery) return post.mapsQuery;
-    if (post.placeName) {
-      const loc = (post.location || "").replace(/\s*·\s*/g, ", ");
-      return loc ? `${post.placeName}, ${loc}, Malaysia` : `${post.placeName}, Malaysia`;
-    }
-    const eat = ["restaurant", "cafe", "hawker", "kopitiam"];
-    if (eat.includes(post.category) && post.location && !/居家|食谱/.test(post.location)) {
-      return `${post.location}, Malaysia`;
-    }
-    if (post.location) return `${post.location}, Malaysia`;
-    if (post.lat != null && post.lng != null) return `${post.lat},${post.lng}`;
     return "";
   },
 
   mapsLinkLabel(post) {
     if (post.placeName) return post.placeName;
-    if (post.location && !/居家|食谱/.test(post.location)) {
-      return post.location.split("·")[0].trim();
+    const q = this.mapsSearchQuery(post);
+    if (!q) return "";
+    if (post.location && post.location.length > 2 && !/^\d+$/.test(post.location)) {
+      return post.location;
     }
-    return "Google 地图";
+    const parts = q.split(",").map((s) => s.trim()).filter(Boolean);
+    if (parts.length >= 2 && /^\d/.test(parts[0])) {
+      return parts.slice(0, 2).join(", ");
+    }
+    return parts[0] || "导航";
   },
 
   googleMapsUrl(post) {
@@ -59,7 +55,10 @@ window.PostUtils = {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
   },
 
-  /** 友好打开原帖：手机直开，桌面走二维码 modal */
+  hasMaps(post) {
+    return !!this.googleMapsUrl(post);
+  },
+
   openXhs(post) {
     if (window.XhsModal) {
       window.XhsModal.open(post);
@@ -79,8 +78,13 @@ window.PostUtils = {
     if (!src) {
       return `<div class="${className} post-cover--empty crab-walk-surface" aria-hidden="true"><span>🦀</span></div>`;
     }
+    const mapHref = post.lat != null && post.lng != null
+      ? `map.html?id=${encodeURIComponent(post.id)}`
+      : this.hasMaps(post)
+        ? `map.html?id=${encodeURIComponent(post.id)}`
+        : `random.html?pick=${encodeURIComponent(post.id)}`;
     return `
-      <a class="${className} crab-walk-surface" href="map.html?id=${encodeURIComponent(post.id)}" tabindex="-1" aria-hidden="true">
+      <a class="${className} crab-walk-surface" href="${mapHref}" tabindex="-1" aria-hidden="true">
         <img src="${src}" alt="${alt}" loading="lazy" decoding="async"
              onerror="this.closest('.post-cover').classList.add('is-broken')">
       </a>`;

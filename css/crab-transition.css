@@ -1,4 +1,4 @@
-/* 螃蟹一口吃掉转场 + 地球 loader */
+/* 转场：网格地球 + 螃蟹绕圈（无钳子/咬屏） */
 
 .crab-transition {
   position: fixed;
@@ -6,147 +6,25 @@
   z-index: 9999;
   pointer-events: none;
   opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
-.crab-transition.is-bite {
+.crab-transition.is-active {
   pointer-events: auto;
   opacity: 1;
+}
+
+.crab-transition.is-fade-out {
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .crab-transition__bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #2a6b7c 0%, #1c4552 100%);
-  opacity: 0;
-  transition: opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(165deg, #2a6b7c 0%, #1c4552 55%, #152830 100%);
 }
 
-.crab-transition.is-bite .crab-transition__bg {
-  opacity: 1;
-}
-
-.crab-transition.is-exit .crab-transition__bg {
-  transition: opacity 0.46s cubic-bezier(0.22, 1, 0.36, 1);
-  opacity: 0;
-}
-
-/* 钳子 */
-.crab-claw {
-  position: absolute;
-  top: 50%;
-  width: 65vw;
-  max-width: 720px;
-  height: auto;
-  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.35));
-}
-
-.crab-claw .claw-shape {
-  fill: #ff5c4d;
-  stroke: #c0382b;
-  stroke-width: 3;
-  stroke-linejoin: round;
-}
-
-.crab-claw .claw-eye {
-  fill: #1c2b33;
-}
-
-.crab-claw--left {
-  left: -70vw;
-  transform: translateY(-50%) rotate(-12deg);
-  transform-origin: 100% 50%;
-}
-
-.crab-claw--right {
-  right: -70vw;
-  transform: translateY(-50%) scaleX(-1) rotate(-12deg);
-  transform-origin: 100% 50%;
-}
-
-.crab-transition.is-bite .crab-claw--left {
-  animation: claw-left-in 0.58s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.crab-transition.is-bite .crab-claw--right {
-  animation: claw-right-in 0.58s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.crab-transition.is-exit .crab-claw--left {
-  animation: claw-left-out 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.crab-transition.is-exit .crab-claw--right {
-  animation: claw-right-out 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes claw-left-in {
-  0% { left: -70vw; transform: translateY(-50%) rotate(-14deg); }
-  60% { left: 2vw; transform: translateY(-50%) rotate(6deg); }
-  100% { left: -4vw; transform: translateY(-50%) rotate(-2deg); }
-}
-
-@keyframes claw-right-in {
-  0% { right: -70vw; transform: translateY(-50%) scaleX(-1) rotate(-14deg); }
-  60% { right: 2vw; transform: translateY(-50%) scaleX(-1) rotate(6deg); }
-  100% { right: -4vw; transform: translateY(-50%) scaleX(-1) rotate(-2deg); }
-}
-
-@keyframes claw-left-out {
-  0% { left: -4vw; transform: translateY(-50%) rotate(-2deg); }
-  100% { left: -70vw; transform: translateY(-50%) rotate(-14deg); }
-}
-
-@keyframes claw-right-out {
-  0% { right: -4vw; transform: translateY(-50%) scaleX(-1) rotate(-2deg); }
-  100% { right: -70vw; transform: translateY(-50%) scaleX(-1) rotate(-14deg); }
-}
-
-/* 螃蟹嘴：中心扩散圆 */
-.crab-mouth {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 80px;
-  height: 80px;
-  margin: -40px 0 0 -40px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #1c2b33 0%, #1c2b33 65%, transparent 100%);
-  transform: scale(0);
-  opacity: 0;
-  box-shadow: 0 0 80px 20px rgba(0, 0, 0, 0.45);
-}
-
-.crab-transition.is-bite .crab-mouth {
-  animation: mouth-bite 0.55s cubic-bezier(0.6, 0, 0.4, 1) 0.18s forwards;
-}
-
-.crab-transition.is-exit .crab-mouth {
-  animation: mouth-open 0.46s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes mouth-bite {
-  0% { transform: scale(0); opacity: 0; }
-  30% { transform: scale(0.8); opacity: 0.9; }
-  100% { transform: scale(28); opacity: 1; }
-}
-
-@keyframes mouth-open {
-  0% { transform: scale(28); opacity: 1; }
-  100% { transform: scale(120); opacity: 0; }
-}
-
-/* 页面被吃感：轻微缩放 */
-body.is-page-leaving {
-  overflow: hidden;
-  animation: body-bite 0.6s cubic-bezier(0.6, 0, 0.4, 1) forwards;
-}
-
-@keyframes body-bite {
-  0% { transform: scale(1); filter: brightness(1); }
-  100% { transform: scale(0.9); filter: brightness(0.55); }
-}
-
-/* 网格地球 Loader */
 .crab-loader {
   position: absolute;
   inset: 0;
@@ -154,25 +32,24 @@ body.is-page-leaving {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  z-index: 10;
+  gap: 0.75rem;
 }
 
 .loader-globe {
-  width: clamp(180px, 30vw, 280px);
-  height: clamp(180px, 30vw, 280px);
-  animation: globe-spin 6s linear infinite;
+  width: clamp(160px, 34vw, 260px);
+  height: clamp(160px, 34vw, 260px);
+  animation: globe-spin 7s linear infinite;
 }
 
 .globe-bg {
-  fill: rgba(74, 157, 176, 0.22);
-  stroke: rgba(255, 255, 255, 0.32);
+  fill: rgba(74, 157, 176, 0.2);
+  stroke: rgba(255, 255, 255, 0.28);
   stroke-width: 1;
 }
 
 .globe-grid {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.42);
+  stroke: rgba(255, 255, 255, 0.38);
   stroke-width: 1;
 }
 
@@ -181,22 +58,22 @@ body.is-page-leaving {
   stroke: #ff5c4d;
   stroke-width: 2.5;
   stroke-dasharray: 12 7;
-  animation: ring-dash 4s linear infinite;
+  animation: ring-dash 3.5s linear infinite;
 }
 
 @keyframes globe-spin {
-  to { transform: rotateY(360deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes ring-dash {
-  to { stroke-dashoffset: -95; }
+  to { stroke-dashoffset: -76; }
 }
 
 .loader-orbit {
   position: absolute;
-  width: clamp(240px, 38vw, 360px);
-  height: clamp(240px, 38vw, 360px);
-  animation: orbit-spin 4s linear infinite;
+  width: clamp(210px, 40vw, 320px);
+  height: clamp(210px, 40vw, 320px);
+  animation: orbit-spin 3.8s linear infinite;
   pointer-events: none;
 }
 
@@ -204,9 +81,9 @@ body.is-page-leaving {
   position: absolute;
   top: 50%;
   left: 50%;
-  font-size: clamp(2rem, 4vw, 2.6rem);
-  transform: translate(-50%, -50%) translateY(calc(-1 * clamp(120px, 19vw, 180px)));
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  transform: translate(-50%, -50%) translateY(calc(-1 * clamp(105px, 19vw, 160px)));
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
 }
 
 @keyframes orbit-spin {
@@ -217,27 +94,27 @@ body.is-page-leaving {
 .loader-text {
   position: relative;
   z-index: 2;
-  margin-top: 1rem;
+  margin: 0.5rem 0 0;
   color: #fff;
   font-size: 0.95rem;
-  letter-spacing: 0.04em;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+}
+
+body.is-page-leaving {
+  overflow: hidden;
+}
+
+.crab-claw,
+.crab-mouth,
+.page-transition-overlay {
+  display: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .crab-claw,
-  .crab-mouth,
-  .crab-transition__bg,
   .loader-globe,
   .loader-orbit,
-  .globe-ring,
-  body.is-page-leaving {
+  .globe-ring {
     animation: none !important;
-    transition: none !important;
   }
-}
-
-/* 移除旧的 page-transition-overlay */
-.page-transition-overlay {
-  display: none !important;
 }

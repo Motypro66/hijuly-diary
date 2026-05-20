@@ -133,7 +133,7 @@ function renderMarkers() {
 
     const PU = window.PostUtils;
     const xhs = PU ? PU.xhsUrl(p) : p.xhsLink || "#";
-    const gmap = PU ? PU.googleMapsUrl(p) : "";
+    const gmap = PU && PU.hasMaps(p) ? PU.googleMapsUrl(p) : "";
     const mapLabel = PU ? PU.mapsLinkLabel(p) : "Google 地图";
     const gmapBtn = gmap
       ? `<a class="popup-link popup-maps" href="${gmap}" target="_blank" rel="noopener noreferrer">📍 ${mapLabel}</a>`
@@ -259,7 +259,7 @@ function showDetail(post) {
       mapsEl.href = gurl;
       mapsEl.hidden = false;
       mapsEl.classList.add("is-named");
-      mapsEl.textContent = `📍 ${PU.mapsLinkLabel(post)}`;
+      mapsEl.textContent = `📍 ${PU.mapsLinkLabel(post) || "导航"}`;
     } else {
       mapsEl.hidden = true;
       mapsEl.classList.remove("is-named");

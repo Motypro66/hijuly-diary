@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机一帖 · 小螃蟹看世界</title>
+  <meta name="description" content="小螃蟹帮你随机抽一篇 @空调17度 的小红书笔记。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/july.css">
+  <link rel="stylesheet" href="css/july-v4.css">
+  <link rel="stylesheet" href="css/july-bear.css">
+  <link rel="stylesheet" href="css/july-layout.css">
+  <link rel="stylesheet" href="css/july-mobile.css">
+  <link rel="stylesheet" href="css/crab-transition.css">
+  <link rel="stylesheet" href="css/xhs-modal.css">
+</head>
+<body class="page-random page-july page-v4 page-bear">
+
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<header class="site-bar site-bar-july site-bar-rich" id="site-header">
+  <div class="wrap nav-inner">
+    <div class="nav-brand">
+      <a href="index.html" class="site-logo site-logo-link nav-to-home" data-site-name>小螃蟹<span>看世界</span></a>
+      <p class="nav-tagline">今天吃什么？交给小螃蟹 🦀</p>
+    </div>
+    <nav class="site-nav">
+      <a href="index.html" class="nav-to-home">首页</a>
+      <a href="random.html" class="active nav-to-random">随机</a>
+      <a href="map.html" class="nav-to-map">地图</a>
+    </nav>
+    <a href="random.html" class="nav-cta nav-to-random" data-transition-label="再抽一篇…">再抽一篇</a>
+  </div>
+</header>
+
+<main class="random-main">
+  <div class="wrap">
+    <section class="random-hero reveal">
+      <p class="section-label">Lucky pick</p>
+      <h1 class="section-title">随机一帖</h1>
+      <p class="section-desc">小螃蟹从 @HiJuly_IP 的档案里帮你抽一篇 — 封面、原帖、有地址才给地图。</p>
+    </section>
+
+    <article id="random-card" class="random-card reveal" aria-live="polite">
+      <p class="random-loading">小螃蟹在翻笔记…</p>
+    </article>
+
+    <div class="random-actions reveal">
+      <a href="random.html" class="btn btn-primary nav-to-random" data-transition-label="换一篇…">换一篇</a>
+      <a href="index.html" class="btn btn-ghost nav-to-home">回首页</a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer site-footer-july reveal">
+  <p><a href="index.html" class="footer-home" data-site-name>小螃蟹看世界</a> · 空调17度</p>
+  <p class="footer-sub">档案站 · <a id="footer-xhs" href="#" target="_blank" rel="noopener noreferrer">@空调17度 小红书</a></p>
+</footer>
+
+<script src="js/site-config.js"></script>
+<script src="js/post-utils.js"></script>
+<script src="js/xhs-modal.js"></script>
+<script src="js/page-transition.js"></script>
+<script src="js/random.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/scroll-reveal.js"></script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+/* v4.5 · 手机排版：留白、单列、13px 导航，接近电脑版气质 */
+
+@media (max-width: 899px) {
+  .page-bear {
+    --section-pad: 2.25rem;
+  }
+
+  .wrap {
+    padding-left: 1.125rem;
+    padding-right: 1.125rem;
+  }
+
+  /* 顶栏：两行，不挤 */
+  .site-bar-rich {
+    --header-h: auto;
+  }
+
+  .site-bar-rich .nav-inner {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 0.5rem 0.65rem;
+    padding: 0.65rem 0;
+  }
+
+  .site-bar-rich .nav-brand {
+    grid-column: 1 / -1;
+  }
+
+  .site-bar-rich .nav-tagline {
+    display: block;
+    font-size: 0.75rem;
+    white-space: normal;
+    line-height: 1.35;
+    opacity: 0.85;
+  }
+
+  .site-bar-rich .site-logo-link {
+    font-size: 1.05rem !important;
+  }
+
+  .site-bar-rich .site-nav {
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .site-bar-rich .site-nav a {
+    font-size: 13px !important;
+    padding: 0.38rem 0.72rem !important;
+  }
+
+  .site-bar-rich .nav-cta {
+    font-size: 13px;
+    padding: 0.42rem 0.85rem;
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+  }
+
+  /* Hero 收紧 */
+  .page-bear.page-home .hero-july {
+    min-height: auto;
+    padding-top: calc(var(--header-h, 56px) + 0.75rem);
+    padding-bottom: 2rem;
+  }
+
+  .page-bear .display {
+    font-size: clamp(1.85rem, 8vw, 2.35rem);
+    line-height: 1.12;
+  }
+
+  .page-bear .hero-lead,
+  .page-bear .hero-sub {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .page-bear .hero-hint {
+    display: none;
+  }
+
+  .page-bear .hero-stats {
+    gap: 1rem 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  .page-bear .stat-val {
+    font-size: 1.35rem;
+  }
+
+  .page-bear .stat-lbl {
+    font-size: 0.68rem;
+  }
+
+  .page-bear .identity-pills {
+    gap: 0.35rem;
+  }
+
+  .page-bear .identity-pill {
+    font-size: 0.72rem;
+    padding: 0.28rem 0.55rem;
+  }
+
+  .page-bear .hero-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .page-bear .hero-actions .btn {
+    width: auto;
+    flex: 1 1 auto;
+    min-width: calc(50% - 0.35rem);
+    font-size: 0.85rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  /* 区块标题 */
+  .page-bear .section-title {
+    font-size: clamp(1.55rem, 6vw, 2rem);
+    max-width: none;
+  }
+
+  .page-bear .section-desc {
+    font-size: 0.88rem;
+  }
+
+  .page-bear .section-picks,
+  .page-bear .section-archive,
+  .page-bear .section-steps,
+  .page-bear .section-july {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  /* 三步：单列卡片，有呼吸感 */
+  .page-bear .steps-grid {
+    gap: 1.25rem;
+  }
+
+  .page-bear .step-card {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-bear .step-num {
+    font-size: 2rem;
+  }
+
+  /* 精选：横向滑，卡片稍窄 */
+  .page-bear .picks-grid .post-card {
+    flex: 0 0 min(72vw, 240px);
+  }
+
+  /* 全部笔记：改回单列，和电脑一样「一张一张看」 */
+  .page-bear .notes-grid.posts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.35rem;
+  }
+
+  .page-bear .notes-grid .post-card {
+    padding: 0.65rem;
+    border-radius: 20px;
+  }
+
+  .page-bear .notes-grid .post-cover {
+    border-radius: 14px;
+  }
+
+  .page-bear .notes-grid .post-title {
+    font-size: 0.92rem;
+  }
+
+  .page-bear .notes-grid .post-hook {
+    display: block;
+    font-size: 0.8rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .page-bear .notes-grid .post-meta {
+    font-size: 0.75rem;
+  }
+
+  .page-bear .notes-grid .post-actions {
+    flex-direction: row;
+    gap: 0.45rem;
+    padding-top: 0.35rem;
+  }
+
+  .page-bear .notes-grid .post-actions .btn-sm {
+    width: auto;
+    flex: 1;
+    font-size: 0.78rem;
+    padding: 0.45rem 0.65rem;
+  }
+
+  .page-bear .chip-row {
+    gap: 0.45rem;
+  }
+
+  .page-bear .chip {
+    font-size: 0.78rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  .page-bear .section-head.row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  .page-bear .cta-band {
+    padding: 2rem 0;
+  }
+
+  .page-bear .cta-inner h2 {
+    font-size: 1.35rem;
+  }
+
+  /* 地图页 */
+  .page-map .map-hero-bar h1 {
+    font-size: 1.25rem;
+  }
+
+  .page-map .filter-pills {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .page-map .filter-pill {
+    font-size: 12px;
+    padding: 0.35rem 0.6rem;
+  }
+}
+
+/* 随机页 */
+.random-main {
+  padding: calc(var(--header-h, 64px) + 1rem) 0 3rem;
+}
+
+.random-hero {
+  margin-bottom: 1.5rem;
+}
+
+.random-card {
+  background: var(--bg-elevated, #fff);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 12px 32px -12px rgba(28, 43, 51, 0.2),
+    0 28px 56px -20px rgba(255, 92, 77, 0.15);
+}
+
+.random-card__media {
+  aspect-ratio: 3 / 4;
+  max-height: 52vh;
+  background: var(--sand, #f5e6d3);
+  overflow: hidden;
+}
+
+.random-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.random-card__empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.random-card__body {
+  padding: 1.1rem 1.15rem 1.25rem;
+}
+
+.random-card__title {
+  font-family: var(--font-display, inherit);
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin: 0 0 0.5rem;
+}
+
+.random-card__hook {
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+  margin: 0 0 0.65rem;
+}
+
+.random-card__addr {
+  font-size: 0.78rem;
+  color: var(--ink-tertiary);
+  line-height: 1.45;
+  margin: 0 0 0.85rem;
+}
+
+.random-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.random-card__actions .btn {
+  flex: 1;
+  min-width: 7rem;
+  justify-content: center;
+}
+
+.random-actions {
+  display: flex;
+  gap: 0.65rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.random-actions .btn {
+  flex: 1;
+  min-width: 8rem;
+  justify-content: center;
+}
+
+.random-loading {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--ink-tertiary);
+}
+
+@media (max-width: 899px) {
+  .random-card__media {
+    max-height: 48vh;
+  }
+  .random-card__title {
+    font-size: 1.05rem;
+  }
+}

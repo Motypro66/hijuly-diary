@@ -103,13 +103,13 @@
   }
 
   .site-bar-rich .site-nav a {
-    font-size: 0.72rem !important;
-    padding: 0.32rem 0.55rem !important;
+    font-size: 13px !important;
+    padding: 0.38rem 0.72rem !important;
   }
 
   .site-bar-rich .nav-cta {
-    font-size: 0.72rem;
-    padding: 0.38rem 0.75rem;
+    font-size: 13px;
+    padding: 0.42rem 0.85rem;
   }
 }
 

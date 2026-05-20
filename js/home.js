@@ -51,25 +51,25 @@ function postCard(p, opts = {}) {
   const xhs = PU.xhsUrl(p);
   const mapUrl = `map.html?id=${encodeURIComponent(p.id)}`;
   const delayAttr = revealDelay ? ` data-reveal-delay="${revealDelay}"` : "";
-  const isPlaceholder = !!p.placeholder;
-  const title = p.title || "戳看原帖";
+  const title = p.title || "笔记";
   const hook = PU.hook(p);
   const location = p.location || "";
+  const showMap = (p.lat != null && p.lng != null) || PU.hasMaps(p);
 
   return `
-    <article class="post-card reveal${featured ? " post-card--featured" : ""}${isPlaceholder ? " post-card--placeholder" : ""}"${delayAttr}>
+    <article class="post-card reveal${featured ? " post-card--featured" : ""}"${delayAttr}>
       ${PU.coverImage(p)}
       <div class="post-info">
         <div class="post-tags">
           ${featured ? '<span class="pick-badge">精选</span>' : ""}
-          ${!isPlaceholder ? `<span class="post-tag tag-${p.category}">${TAG_LABELS[p.category] || p.category}</span>` : '<span class="post-tag tag-archive">档案</span>'}
+          <span class="post-tag tag-${p.category}">${TAG_LABELS[p.category] || p.category}</span>
         </div>
         <h3 class="post-title">${title}</h3>
         ${hook ? `<p class="post-hook">${hook}</p>` : ""}
-        ${location ? `<p class="post-meta">${location}</p>` : `<p class="post-meta post-meta--quiet">@HiJuly_IP · 点查看原帖</p>`}
+        ${location ? `<p class="post-meta">${location}</p>` : ""}
       </div>
       <div class="post-actions">
-        ${!isPlaceholder ? `<a class="btn btn-sm post-link-map" href="${mapUrl}">地图</a>` : ""}
+        ${showMap ? `<a class="btn btn-sm post-link-map" href="${mapUrl}">地图</a>` : ""}
         <a class="btn btn-sm btn-outline post-link-xhs" href="${xhs}" target="_blank" rel="noopener noreferrer" data-post-id="${p.id}">见原帖</a>
       </div>
     </article>`;
@@ -154,16 +154,10 @@ async function loadHomePosts() {
   const featuredEl = document.getElementById("featured-posts");
   const archiveDesc = document.getElementById("archive-desc");
 
-  const t = setTimeout(() => {
-    window.CrabTransition?.showLoader?.("小螃蟹绕地球找好吃…");
-  }, 350);
-
   try {
     const res = await fetch("data/posts.json");
     if (!res.ok) throw new Error(String(res.status));
     archiveAll = await res.json();
-    clearTimeout(t);
-    window.CrabTransition?.hideLoader?.();
 
     const statPosts = document.getElementById("stat-posts");
     if (statPosts) statPosts.textContent = String(archiveAll.length);
@@ -172,9 +166,7 @@ async function loadHomePosts() {
     }
 
     if (featuredEl) {
-      const withTitle = archiveAll.filter((p) => !p.placeholder);
-      const highlights = withTitle.filter((p) => p.highlight);
-      const list = highlights.length ? highlights : withTitle.slice(0, 3);
+      const list = archiveAll.slice(0, 3);
       featuredEl.innerHTML = list
         .map((p, i) => postCard(p, { featured: true, revealDelay: i * 70 }))
         .join("");
@@ -185,8 +177,6 @@ async function loadHomePosts() {
     renderCategoryChips(archiveAll);
     renderArchive(archiveAll, false);
   } catch {
-    clearTimeout(t);
-    window.CrabTransition?.hideLoader?.();
     const recentEl = document.getElementById("recent-posts");
     if (recentEl) {
       recentEl.innerHTML = `<p class="recent-empty">无法加载笔记。</p>`;
