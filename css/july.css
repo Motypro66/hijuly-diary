@@ -749,19 +749,7 @@
 
 /* ── Map page ── */
 .map-hero-bar {
-  padding: calc(var(--header-h) + 1rem) 1.5rem 1rem;
-  background: var(--bg-elevated);
-  border-bottom: 1px solid var(--border);
-}
-
-.map-hero-bar h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.map-hero-bar p {
-  font-size: 0.95rem;
-  color: var(--ink-tertiary);
+  display: none;
 }
 
 .page-july.page-map {
@@ -771,7 +759,7 @@
 
 .page-july.page-map .main-layout,
 .page-july.page-map #map {
-  height: calc(100vh - var(--header-h) - 72px);
+  height: calc(100vh - var(--map-inset-top, var(--header-h)));
 }
 
 .page-july.page-map .site-bar-july {

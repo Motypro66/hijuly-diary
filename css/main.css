@@ -398,7 +398,7 @@ a:hover { text-decoration: underline; }
 
 #map {
   width: 100%;
-  height: calc(100vh - var(--header-h));
+  height: calc(100vh - var(--map-inset-top, calc(var(--header-h) + 52px)));
   z-index: 1;
 }
 
@@ -517,6 +517,47 @@ a:hover { text-decoration: underline; }
   padding: 1rem 1.15rem;
   border-bottom: 1px solid var(--border);
   background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.panel-close {
+  display: none;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink-muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@media (max-width: 899px) {
+  .post-panel {
+    width: min(300px, 78vw);
+    z-index: 1100;
+  }
+
+  .panel-backdrop {
+    display: block;
+    z-index: 1050;
+  }
+
+  .panel-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  body.panel-open {
+    overflow: hidden;
+  }
 }
 
 .panel-head h2 {

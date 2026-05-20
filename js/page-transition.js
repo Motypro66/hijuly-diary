@@ -1,7 +1,8 @@
 /**
  * 转场：网格地球 + 螃蟹绕圈（无黑屏）
  * 离开：overlay 淡入 → 跳转
- * 到达：overlay 已在（sessionStorage）→ 直接淡出，不二次闪现
+ * 到达：overlay 已在（sessionStorage）→ 淡出
+ * 返回：bfcache 恢复时淡出，不卡住
  */
 (function () {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -25,13 +26,22 @@
   function fadeOut() {
     if (reduceMotion) {
       overlay.classList.remove("is-active", "is-fade-out");
+      overlay.setAttribute("aria-hidden", "true");
+      document.documentElement.classList.remove("crab-incoming");
       return;
     }
     overlay.classList.add("is-fade-out");
     setTimeout(() => {
       overlay.classList.remove("is-active", "is-fade-out");
       overlay.setAttribute("aria-hidden", "true");
+      document.documentElement.classList.remove("crab-incoming");
     }, 520);
+  }
+
+  function hideOverlayOnly() {
+    overlay.classList.remove("is-active", "is-fade-out");
+    overlay.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("crab-incoming");
   }
 
   function go(href, label) {
@@ -67,24 +77,24 @@
   const incoming = sessionStorage.getItem(KEY) === "1";
   if (incoming) {
     sessionStorage.removeItem(KEY);
-    overlay.classList.remove("is-active", "is-fade-out");
-    overlay.setAttribute("aria-hidden", "true");
     document.documentElement.classList.remove("crab-incoming");
+    showActive();
+    requestAnimationFrame(() => fadeOut());
   }
 
-  /** 离开页面前收起转场，避免手机「返回」卡在螃蟹画面（bfcache） */
-  function clearTransition() {
-    sessionStorage.removeItem(KEY);
-    overlay.classList.remove("is-active", "is-fade-out");
-    overlay.setAttribute("aria-hidden", "true");
-    document.documentElement.classList.remove("crab-incoming");
-  }
-
-  window.addEventListener("pagehide", clearTransition);
+  /** 离开页：只藏 overlay，保留 KEY 给下一页；避免返回时卡在螃蟹画面 */
+  window.addEventListener("pagehide", hideOverlayOnly);
 
   window.addEventListener("pageshow", (e) => {
-    if (e.persisted) clearTransition();
+    if (!e.persisted) return;
+    sessionStorage.removeItem(KEY);
+    document.documentElement.classList.remove("crab-incoming");
+    if (overlay.classList.contains("is-active")) {
+      fadeOut();
+    } else {
+      hideOverlayOnly();
+    }
   });
 
-  window.CrabTransition = { show: showActive, hide: fadeOut, go, clear: clearTransition };
+  window.CrabTransition = { show: showActive, hide: fadeOut, go, clear: hideOverlayOnly };
 })();

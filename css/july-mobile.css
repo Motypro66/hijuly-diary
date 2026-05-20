@@ -260,9 +260,42 @@
     font-size: 1.35rem;
   }
 
-  /* 地图页 */
-  .page-map .map-hero-bar h1 {
-    font-size: 1.25rem;
+  /* 地图页：去掉顶部白底，地图紧贴筛选按钮下方 */
+  .page-map {
+    padding-top: 0;
+    overflow: hidden;
+  }
+
+  .page-map .site-bar-rich {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    width: 100%;
+  }
+
+  .page-map .map-hero-bar {
+    display: none;
+  }
+
+  .page-map .map-toolbar {
+    position: fixed;
+    top: auto;
+    left: 0.65rem;
+    right: 0.65rem;
+    z-index: 850;
+  }
+
+  .page-map #map {
+    position: fixed !important;
+    top: var(--map-inset-top, 108px) !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    z-index: 1;
   }
 
   .page-map .filter-pills {

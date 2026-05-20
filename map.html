@@ -11,13 +11,13 @@
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/july.css">
   <link rel="stylesheet" href="css/july-v4.css">
-  <link rel="stylesheet" href="css/july-bear.css?v=4.7.5">
-  <link rel="stylesheet" href="css/july-layout.css?v=4.7.5">
-  <link rel="stylesheet" href="css/july-mobile.css?v=4.7.5">
-  <link rel="stylesheet" href="css/july-archive-mobile.css?v=4.7.5">
+  <link rel="stylesheet" href="css/july-bear.css?v=4.7.6">
+  <link rel="stylesheet" href="css/july-layout.css?v=4.7.6">
+  <link rel="stylesheet" href="css/july-mobile.css?v=4.7.6">
+  <link rel="stylesheet" href="css/july-archive-mobile.css?v=4.7.6">
   <link rel="stylesheet" href="css/crab-transition.css">
   <link rel="stylesheet" href="css/xhs-modal.css">
-  <link rel="stylesheet" href="css/july-map-popup.css?v=4.7.5">
+  <link rel="stylesheet" href="css/july-map-popup.css?v=4.7.6">
   <script>
   (function(){if(sessionStorage.getItem('crabTransition')==='1'){document.documentElement.classList.add('crab-incoming');}})();
   </script>
@@ -58,7 +58,7 @@
   </div>
 </header>
 
-<div class="map-hero-bar">
+<div class="map-hero-bar" aria-hidden="true">
   <h1>小螃蟹觅食地图</h1>
   <p>点标点 · 见原帖 · Google 地图导航</p>
 </div>
@@ -68,6 +68,7 @@
 <aside id="post-panel" class="post-panel" aria-label="笔记列表">
   <div class="panel-head">
     <h2>笔记足迹</h2>
+    <button type="button" id="panel-close" class="panel-close" aria-label="关闭列表">×</button>
   </div>
   <div id="post-list" class="panel-list"></div>
 </aside>
@@ -113,9 +114,9 @@
 <script src="js/site-config.js"></script>
 <script src="js/post-labels.js"></script>
 <script src="js/post-utils.js"></script>
-<script src="js/page-transition.js?v=4.7.5"></script>
+<script src="js/page-transition.js?v=4.7.6"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="js/map.js?v=4.7.5"></script>
+<script src="js/map.js?v=4.7.6"></script>
 <script src="js/nav.js"></script>
 </body>
 </html>

@@ -55,6 +55,25 @@ function getMappable() {
   return getFiltered().filter((p) => p.lat != null && p.lng != null);
 }
 
+let panelOutsideHandler = null;
+
+function syncMapLayout() {
+  const header = document.getElementById("site-header");
+  const toolbar = document.querySelector(".map-toolbar");
+  if (!header || !toolbar) return;
+
+  if (isMobileMap()) {
+    const headerBottom = header.getBoundingClientRect().bottom;
+    toolbar.style.top = `${Math.ceil(headerBottom + 6)}px`;
+  } else {
+    toolbar.style.top = "";
+  }
+
+  const bottom = toolbar.getBoundingClientRect().bottom;
+  document.documentElement.style.setProperty("--map-inset-top", `${Math.ceil(bottom + 4)}px`);
+  map?.invalidateSize();
+}
+
 function initMap() {
   map = L.map("map", {
     center: [4.2, 109.0],
@@ -78,6 +97,9 @@ function initMap() {
     const bounds = L.latLngBounds(mapped.map((p) => [p.lat, p.lng]));
     map.fitBounds(bounds.pad(0.15));
   }
+
+  syncMapLayout();
+  window.addEventListener("resize", syncMapLayout, { passive: true });
 }
 
 function renderAll() {
@@ -182,6 +204,9 @@ function fitPopupToImage(popupEl) {
     const nh = img.naturalHeight;
     if (!nw || !nh) return;
 
+    const content = popupEl.closest(".leaflet-popup-content") || popupEl;
+    const wrapper = content?.closest(".leaflet-popup-content-wrapper");
+
     const mobile = window.innerWidth < 900;
     const maxW = mobile ? Math.min(240, window.innerWidth * 0.72 - 16) : 280;
     const maxH = mobile ? 200 : 260;
@@ -194,17 +219,16 @@ function fitPopupToImage(popupEl) {
       w = Math.round(h * ratio);
     }
 
-    const cardW = Math.max(w, 200);
+    const cardW = w;
     cover.style.width = `${w}px`;
     cover.style.height = `${h}px`;
-    cover.style.aspectRatio = `${nw} / ${nh}`;
 
-    const content = popupEl.closest(".leaflet-popup-content") || popupEl;
-    const wrapper = content?.closest(".leaflet-popup-content-wrapper");
-    [content, wrapper].forEach((el) => {
+    const box = popupEl.querySelector(".popup-box") || popupEl;
+    [box, content, wrapper].forEach((el) => {
       if (!el) return;
       el.style.width = `${cardW}px`;
       el.style.maxWidth = `${cardW}px`;
+      el.style.minWidth = "0";
     });
 
     map?.invalidateSize();
@@ -245,8 +269,8 @@ function renderMarkers() {
     const marker = L.marker([p.lat, p.lng], { icon })
       .addTo(map)
       .bindPopup(popupHtml(p), {
-        maxWidth: 300,
-        minWidth: 200,
+        maxWidth: 320,
+        minWidth: 0,
         className: "july-map-popup",
       });
 
@@ -291,18 +315,34 @@ function isMobileMap() {
 function openPanel() {
   document.getElementById("post-panel")?.classList.add("open");
   const backdrop = document.getElementById("panel-backdrop");
-  if (backdrop && isMobileMap()) {
-    backdrop.classList.add("is-open");
-    backdrop.setAttribute("aria-hidden", "false");
+  if (isMobileMap()) {
+    backdrop?.classList.add("is-open");
+    backdrop?.setAttribute("aria-hidden", "false");
+    document.body.classList.add("panel-open");
+
+    if (!panelOutsideHandler) {
+      panelOutsideHandler = (e) => {
+        const panel = document.getElementById("post-panel");
+        const btn = document.getElementById("btn-list");
+        if (panel?.contains(e.target) || btn?.contains(e.target)) return;
+        closePanel();
+      };
+    }
+    setTimeout(() => {
+      document.addEventListener("pointerdown", panelOutsideHandler, true);
+    }, 0);
   }
 }
 
 function closePanel() {
   document.getElementById("post-panel")?.classList.remove("open");
   const backdrop = document.getElementById("panel-backdrop");
-  if (backdrop) {
-    backdrop.classList.remove("is-open");
-    backdrop.setAttribute("aria-hidden", "true");
+  backdrop?.classList.remove("is-open");
+  backdrop?.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("panel-open");
+
+  if (panelOutsideHandler) {
+    document.removeEventListener("pointerdown", panelOutsideHandler, true);
   }
 }
 
@@ -430,8 +470,9 @@ function setupUI() {
   });
 
   document.getElementById("btn-list")?.addEventListener("click", togglePanel);
+  document.getElementById("panel-close")?.addEventListener("click", closePanel);
   document.getElementById("sheet-close")?.addEventListener("click", closeDetail);
-  document.getElementById("panel-backdrop")?.addEventListener("click", closePanel);
+  document.getElementById("panel-backdrop")?.addEventListener("pointerdown", closePanel);
 
   if (window.innerWidth >= 900) {
     document.getElementById("post-panel")?.classList.remove("collapsed");
@@ -474,5 +515,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setupUI();
     openPostFromQuery();
     openCategoryFromQuery();
+    requestAnimationFrame(syncMapLayout);
+    window.setTimeout(syncMapLayout, 120);
   }
 });

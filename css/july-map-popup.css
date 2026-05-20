@@ -1,25 +1,25 @@
 /**
- * 地图标点弹窗 — 按图片比例自适应，完整显示不溢出
+ * 地图标点弹窗 — 卡片宽高跟随图片比例
  */
 .leaflet-popup.july-map-popup .leaflet-popup-content-wrapper {
-  max-width: 300px !important;
   width: auto !important;
+  max-width: 320px !important;
+  min-width: 0 !important;
   overflow: hidden !important;
   border-radius: 12px !important;
 }
 
 .leaflet-popup.july-map-popup .leaflet-popup-content {
   width: auto !important;
-  max-width: 300px !important;
-  min-width: 200px !important;
+  max-width: 320px !important;
+  min-width: 0 !important;
   margin: 0 !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
 
 .leaflet-popup.july-map-popup .popup-box {
-  width: 100%;
-  max-width: 100%;
+  width: auto;
   min-width: 0;
   overflow: hidden;
   box-sizing: border-box;
@@ -30,19 +30,18 @@
 }
 
 .leaflet-popup.july-map-popup .popup-inner {
-  padding: 0.65rem 0.75rem 0.75rem;
+  padding: 0.55rem 0.6rem 0.65rem;
+  box-sizing: border-box;
 }
 
 .leaflet-popup.july-map-popup .popup-cover {
-  margin: 0 auto;
+  margin: 0;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   background: #f1f5f9;
   border-radius: 12px 12px 0 0;
   box-sizing: border-box;
-  max-width: 100%;
+  line-height: 0;
 }
 
 .leaflet-popup.july-map-popup .popup-cover img {
@@ -54,52 +53,51 @@
 }
 
 .leaflet-popup.july-map-popup .popup-box h3 {
-  font-size: 0.82rem;
-  margin: 0.3rem 0 0.15rem;
+  font-size: 0.8rem;
+  margin: 0.25rem 0 0.12rem;
   line-height: 1.35;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;
 }
 
 .leaflet-popup.july-map-popup .popup-loc {
-  font-size: 0.72rem;
-  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
+  margin: 0 0 0.4rem;
+  word-break: break-word;
 }
 
 .leaflet-popup.july-map-popup .popup-actions {
-  gap: 0.3rem;
+  gap: 0.28rem;
 }
 
 .leaflet-popup.july-map-popup .popup-link {
-  font-size: 0.75rem;
-  padding: 0.35rem 0.45rem;
+  font-size: 0.72rem;
+  padding: 0.32rem 0.4rem;
 }
 
 @media (max-width: 899px) {
-  .leaflet-popup.july-map-popup .leaflet-popup-content-wrapper {
-    max-width: min(260px, 72vw) !important;
-  }
-
+  .leaflet-popup.july-map-popup .leaflet-popup-content-wrapper,
   .leaflet-popup.july-map-popup .leaflet-popup-content {
-    max-width: min(260px, 72vw) !important;
+    max-width: min(280px, 78vw) !important;
   }
 
   .leaflet-popup.july-map-popup .popup-inner {
-    padding: 0.5rem 0.6rem 0.6rem;
+    padding: 0.45rem 0.5rem 0.55rem;
   }
 
   .leaflet-popup.july-map-popup .popup-box h3 {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
   }
 
   .leaflet-popup.july-map-popup .popup-loc {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
   }
 
   .leaflet-popup.july-map-popup .popup-link {
-    font-size: 0.68rem;
-    padding: 0.28rem 0.38rem;
+    font-size: 0.65rem;
+    padding: 0.26rem 0.34rem;
   }
 }
