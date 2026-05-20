@@ -5,6 +5,35 @@
     --section-pad: 2.25rem;
   }
 
+  /* 顶栏：滚动后实色底，导航字可读 */
+  .site-bar-rich.site-bar-july {
+    background: rgba(253, 246, 238, 0.97);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border-bottom: 1px solid rgba(28, 43, 51, 0.08);
+  }
+
+  .site-bar-rich.site-bar-july.is-scrolled {
+    background: rgba(253, 246, 238, 0.99);
+    box-shadow: 0 2px 12px rgba(28, 43, 51, 0.08);
+  }
+
+  .page-map .site-bar-rich.site-bar-july,
+  .page-map .site-bar-rich.site-bar-july.is-scrolled {
+    background: rgba(253, 246, 238, 0.98);
+  }
+
+  .site-bar-rich .site-nav a {
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 1px 0 rgba(28, 43, 51, 0.06);
+  }
+
+  .site-bar-rich .site-nav a.active {
+    background: var(--coral, #ff5c4d);
+    color: #fff;
+    box-shadow: none;
+  }
+
   .wrap {
     padding-left: 1.125rem;
     padding-right: 1.125rem;

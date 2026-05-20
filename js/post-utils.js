@@ -64,10 +64,6 @@ window.PostUtils = {
   },
 
   openXhs(post) {
-    if (window.XhsModal) {
-      window.XhsModal.open(post);
-      return true;
-    }
     const url = this.xhsUrl(post);
     if (url && url !== "#") {
       window.open(url, "_blank", "noopener,noreferrer");

@@ -1,12 +1,15 @@
 const PU = window.PostUtils;
 const LABELS = window.POST_LABELS;
 
-const REGIONS = {
-  kv: { label: "雪隆区", desc: "KL · PJ · Setapak · SS15 · Kepong · Cheras" },
-  jb: { label: "新山 JB", desc: "Johor Bahru · Mount Austin" },
-  klang: { label: "巴生", desc: "Klang · 巴生区" },
-  other: { label: "其他", desc: "全马其他足迹" },
-};
+const CATEGORIES = [
+  { key: "all", label: "全部" },
+  { key: "restaurant", label: "餐厅" },
+  { key: "cafe", label: "Cafe" },
+  { key: "kopitiam", label: "茶室" },
+  { key: "hawker", label: "路边摊" },
+  { key: "haokang", label: "好康" },
+  { key: "haowu", label: "好物" },
+];
 
 function applyBranding() {
   const cfg = window.SITE;
@@ -49,13 +52,13 @@ function bindXhs(root, posts) {
   });
 }
 
-function renderTabs(active) {
-  const el = document.getElementById("region-tabs");
+function renderTabs(active, counts) {
+  const el = document.getElementById("category-tabs");
   if (!el) return;
-  el.innerHTML = Object.entries(REGIONS)
+  el.innerHTML = CATEGORIES.filter((c) => c.key === "all" || (counts[c.key] || 0) > 0)
     .map(
-      ([key, r]) =>
-        `<a href="region.html?r=${key}" class="chip nav-to-region ${key === active ? "is-active" : ""}">${r.label}</a>`
+      (c) =>
+        `<a href="category.html?c=${c.key}" class="chip nav-to-category ${c.key === active ? "is-active" : ""}">${c.label}<span class="chip-count">${c.key === "all" ? counts.all : counts[c.key] || 0}</span></a>`
     )
     .join("");
 }
@@ -63,29 +66,37 @@ function renderTabs(active) {
 async function init() {
   applyBranding();
   const params = new URLSearchParams(window.location.search);
-  const region = params.get("r") || "kv";
-  const meta = REGIONS[region] || REGIONS.kv;
+  const cat = params.get("c") || "all";
+  const meta = CATEGORIES.find((c) => c.key === cat) || CATEGORIES[0];
 
-  document.getElementById("region-title").textContent = meta.label;
-  document.getElementById("region-desc").textContent = meta.desc;
-  document.getElementById("region-tagline").textContent = meta.label;
-
-  renderTabs(region);
+  document.getElementById("category-title").textContent =
+    cat === "all" ? "按类型逛" : meta.label;
+  document.getElementById("category-desc").textContent =
+    cat === "all"
+      ? "餐厅 · Cafe · 茶室 · 路边摊 · 好康 · 好物"
+      : `${meta.label}类笔记`;
+  document.getElementById("category-tagline").textContent = meta.label;
 
   try {
     const res = await fetch("data/posts.json");
     const all = await res.json();
-    const posts = all.filter((p) => (p.region || "other") === region);
-    const grid = document.getElementById("region-posts");
+    const counts = { all: all.length };
+    all.forEach((p) => {
+      counts[p.category] = (counts[p.category] || 0) + 1;
+    });
+    renderTabs(cat, counts);
+
+    const posts = cat === "all" ? all : all.filter((p) => p.category === cat);
+    const grid = document.getElementById("category-posts");
     if (!posts.length) {
-      grid.innerHTML = `<p class="recent-empty">这个地区还没有笔记，看看其他地区吧。</p>`;
+      grid.innerHTML = `<p class="recent-empty">这个类型还没有笔记。</p>`;
       return;
     }
     grid.innerHTML = posts.map((p) => postCard(p)).join("");
     bindXhs(grid, all);
     window.observeReveals?.(grid);
   } catch {
-    document.getElementById("region-posts").innerHTML = `<p class="recent-empty">加载失败</p>`;
+    document.getElementById("category-posts").innerHTML = `<p class="recent-empty">加载失败</p>`;
   }
 }
 

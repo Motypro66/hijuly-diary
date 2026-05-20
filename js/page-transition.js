@@ -61,19 +61,15 @@
   }
 
   document
-    .querySelectorAll('a[href$=".html"], a.nav-to-map, a.nav-to-home, a.nav-to-random, a.nav-to-region')
+    .querySelectorAll('a[href$=".html"], a.nav-to-map, a.nav-to-home, a.nav-to-random, a.nav-to-region, a.nav-to-browse, a.nav-to-category')
     .forEach(bindTransition);
 
   const incoming = sessionStorage.getItem(KEY) === "1";
   if (incoming) {
     sessionStorage.removeItem(KEY);
-    setLabel("到了，开吃！");
-    showActive();
-    if (reduceMotion) {
-      fadeOut();
-    } else {
-      setTimeout(fadeOut, 280);
-    }
+    overlay.classList.remove("is-active", "is-fade-out");
+    overlay.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("crab-incoming");
   }
 
   window.CrabTransition = { show: showActive, hide: fadeOut, go };

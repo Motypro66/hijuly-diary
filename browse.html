@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>按地区逛 · 小螃蟹看世界</title>
+  <title>逛逛 · 小螃蟹看世界</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
@@ -13,12 +13,11 @@
   <link rel="stylesheet" href="css/july-layout.css">
   <link rel="stylesheet" href="css/july-mobile.css">
   <link rel="stylesheet" href="css/crab-transition.css">
-  <link rel="stylesheet" href="css/xhs-modal.css">
   <script>
   (function(){if(sessionStorage.getItem('crabTransition')==='1'){document.documentElement.classList.add('crab-incoming');}})();
   </script>
 </head>
-<body class="page-region page-july page-v4 page-bear">
+<body class="page-browse page-july page-v4 page-bear">
 
 <div class="crab-transition" id="crab-transition" aria-hidden="true">
   <div class="crab-transition__bg"></div>
@@ -42,11 +41,11 @@
   <div class="wrap nav-inner">
     <div class="nav-brand">
       <a href="index.html" class="site-logo site-logo-link nav-to-home" data-site-name>小螃蟹<span>看世界</span></a>
-      <p class="nav-tagline" id="region-tagline">按地区逛</p>
+      <p class="nav-tagline">按地区 · 按类型</p>
     </div>
     <nav class="site-nav">
       <a href="index.html" class="nav-to-home">首页</a>
-      <a href="browse.html" class="nav-to-browse active">逛逛</a>
+      <a href="browse.html" class="active nav-to-browse">逛逛</a>
       <a href="random.html" class="nav-to-random">随机</a>
       <a href="map.html" class="nav-to-map">地图</a>
     </nav>
@@ -54,15 +53,27 @@
   </div>
 </header>
 
-<main class="region-main">
+<main class="browse-main">
   <div class="wrap">
-    <section class="region-hero reveal">
-      <p class="section-label">Browse by area</p>
-      <h1 class="section-title" id="region-title">按地区逛</h1>
-      <p class="section-desc" id="region-desc">加载中…</p>
-      <div class="region-tabs" id="region-tabs"></div>
+    <section class="browse-hero reveal">
+      <p class="section-label">Browse</p>
+      <h1 class="section-title">逛逛档案</h1>
+      <p class="section-desc">按地区或类型筛选 @HiJuly_IP 的笔记，抄作业更方便。</p>
     </section>
-    <div id="region-posts" class="notes-grid posts-grid"></div>
+    <div class="browse-grid reveal">
+      <a href="region.html?r=kv" class="browse-card nav-to-region">
+        <span class="browse-card__eyebrow">By area</span>
+        <h2>按地区逛</h2>
+        <p>雪隆 · 新山 · 巴生 · 其他</p>
+        <span class="link-arrow">进入 →</span>
+      </a>
+      <a href="category.html" class="browse-card nav-to-category">
+        <span class="browse-card__eyebrow">By type</span>
+        <h2>按类型逛</h2>
+        <p>餐厅 · Cafe · 茶室 · 路边摊 · 好康 · 好物</p>
+        <span class="link-arrow">进入 →</span>
+      </a>
+    </div>
   </div>
 </main>
 
@@ -72,10 +83,8 @@
 </footer>
 
 <script src="js/site-config.js"></script>
-<script src="js/post-labels.js"></script>
-<script src="js/post-utils.js"></script>
 <script src="js/page-transition.js"></script>
-<script src="js/region.js"></script>
+<script src="js/browse.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/scroll-reveal.js"></script>
 </body>

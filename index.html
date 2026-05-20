@@ -47,6 +47,7 @@
     </div>
     <nav class="site-nav">
       <a href="index.html" class="active">首页</a>
+      <a href="browse.html" class="nav-to-browse">逛逛</a>
       <a href="random.html" class="nav-to-random">随机</a>
       <a href="map.html" class="nav-to-map">地图</a>
     </nav>
@@ -130,23 +131,6 @@
     </div>
   </section>
 
-  <section class="section-july reveal">
-    <div class="wrap">
-      <p class="section-label">By area</p>
-      <h2 class="section-title">按地区逛</h2>
-      <p class="section-desc">雪隆 · 新山 · 巴生 — 分区域抄作业</p>
-      <div class="chip-row" id="region-chips"></div>
-    </div>
-  </section>
-
-  <section class="section-july reveal">
-    <div class="wrap">
-      <p class="section-label">Browse</p>
-      <h2 class="section-title">按类型逛</h2>
-      <div class="chip-row" id="category-chips"></div>
-    </div>
-  </section>
-
   <section class="section-archive section-july reveal">
     <div class="wrap">
       <div class="section-head row">
@@ -155,7 +139,7 @@
           <h2 class="section-title">全部笔记</h2>
           <p class="section-desc" id="archive-desc">加载中…</p>
         </div>
-        <a href="map.html" class="link-arrow nav-to-map">地图上看 →</a>
+        <a href="browse.html" class="link-arrow nav-to-browse">按地区 / 类型逛 →</a>
       </div>
       <div id="recent-posts" class="notes-grid posts-grid"></div>
       <div id="archive-more-wrap" class="archive-more-wrap" hidden>
@@ -184,8 +168,8 @@
 </footer>
 
 <script src="js/site-config.js"></script>
+<script src="js/post-labels.js"></script>
 <script src="js/post-utils.js"></script>
-<script src="js/xhs-modal.js"></script>
 <script src="js/page-transition.js"></script>
 <script src="js/home.js"></script>
 <script src="js/nav.js"></script>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>按地区逛 · 小螃蟹看世界</title>
+  <title>按类型逛 · 小螃蟹看世界</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
@@ -13,12 +13,11 @@
   <link rel="stylesheet" href="css/july-layout.css">
   <link rel="stylesheet" href="css/july-mobile.css">
   <link rel="stylesheet" href="css/crab-transition.css">
-  <link rel="stylesheet" href="css/xhs-modal.css">
   <script>
   (function(){if(sessionStorage.getItem('crabTransition')==='1'){document.documentElement.classList.add('crab-incoming');}})();
   </script>
 </head>
-<body class="page-region page-july page-v4 page-bear">
+<body class="page-category page-july page-v4 page-bear">
 
 <div class="crab-transition" id="crab-transition" aria-hidden="true">
   <div class="crab-transition__bg"></div>
@@ -42,7 +41,7 @@
   <div class="wrap nav-inner">
     <div class="nav-brand">
       <a href="index.html" class="site-logo site-logo-link nav-to-home" data-site-name>小螃蟹<span>看世界</span></a>
-      <p class="nav-tagline" id="region-tagline">按地区逛</p>
+      <p class="nav-tagline" id="category-tagline">按类型逛</p>
     </div>
     <nav class="site-nav">
       <a href="index.html" class="nav-to-home">首页</a>
@@ -57,12 +56,12 @@
 <main class="region-main">
   <div class="wrap">
     <section class="region-hero reveal">
-      <p class="section-label">Browse by area</p>
-      <h1 class="section-title" id="region-title">按地区逛</h1>
-      <p class="section-desc" id="region-desc">加载中…</p>
-      <div class="region-tabs" id="region-tabs"></div>
+      <p class="section-label">Browse by type</p>
+      <h1 class="section-title" id="category-title">按类型逛</h1>
+      <p class="section-desc" id="category-desc">加载中…</p>
+      <div class="region-tabs" id="category-tabs"></div>
     </section>
-    <div id="region-posts" class="notes-grid posts-grid"></div>
+    <div id="category-posts" class="notes-grid posts-grid"></div>
   </div>
 </main>
 
@@ -75,7 +74,7 @@
 <script src="js/post-labels.js"></script>
 <script src="js/post-utils.js"></script>
 <script src="js/page-transition.js"></script>
-<script src="js/region.js"></script>
+<script src="js/category.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/scroll-reveal.js"></script>
 </body>

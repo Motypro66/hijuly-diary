@@ -1,12 +1,4 @@
-const TAG_LABELS = {
-  hawker: "路边摊",
-  kopitiam: "茶室",
-  cafe: "Cafe",
-  restaurant: "餐厅",
-  haokang: "好康",
-  haowu: "好物",
-};
-
+const TAG_LABELS = window.POST_LABELS;
 const PU = window.PostUtils;
 const ARCHIVE_INITIAL = 8;
 
@@ -78,66 +70,7 @@ function postCard(p, opts = {}) {
     </article>`;
 }
 
-function renderCategoryChips(posts, active = "all") {
-  const el = document.getElementById("category-chips");
-  if (!el) return;
-
-  const food = posts.filter((p) => PU.isFoodPost(p));
-  const counts = {};
-  food.forEach((p) => {
-    counts[p.category] = (counts[p.category] || 0) + 1;
-  });
-
-  const items = [
-    { key: "all", label: "全部", count: food.length },
-    ...Object.entries(TAG_LABELS).map(([key, label]) => ({
-      key,
-      label,
-      count: counts[key] || 0,
-    })),
-  ].filter((x) => x.key === "all" || x.count > 0);
-
-  el.innerHTML = items
-    .map(
-      (x) => `
-    <a href="map.html${x.key === "all" ? "" : `?cat=${x.key}`}"
-       class="chip nav-to-map ${active === x.key ? "is-active" : ""}">
-      ${x.label}<span class="chip-count">${x.count}</span>
-    </a>`
-    )
-    .join("");
-}
-
-function renderRegionChips(posts) {
-  const el = document.getElementById("region-chips");
-  if (!el) return;
-
-  const regions = [
-    { key: "kv", label: "雪隆区" },
-    { key: "jb", label: "新山 JB" },
-    { key: "klang", label: "巴生" },
-    { key: "other", label: "其他" },
-  ];
-
-  const counts = {};
-  posts.filter((p) => PU.isFoodPost(p)).forEach((p) => {
-    const r = p.region || "other";
-    counts[r] = (counts[r] || 0) + 1;
-  });
-
-  el.innerHTML = regions
-    .filter((r) => counts[r.key] > 0)
-    .map(
-      (r) => `
-    <a href="region.html?r=${r.key}" class="chip nav-to-region">
-      ${r.label}<span class="chip-count">${counts[r.key]}</span>
-    </a>`
-    )
-    .join("");
-}
-
 let archiveAll = [];
-let archiveFood = [];
 
 function renderArchive(posts, expanded) {
   const recentEl = document.getElementById("recent-posts");
@@ -191,17 +124,15 @@ async function loadHomePosts() {
     const res = await fetch("data/posts.json");
     if (!res.ok) throw new Error(String(res.status));
     archiveAll = await res.json();
-    archiveFood = archiveAll.filter((p) => PU.isFoodPost(p));
-    const foodPosts = archiveFood;
 
     const statPosts = document.getElementById("stat-posts");
-    if (statPosts) statPosts.textContent = String(foodPosts.length);
+    if (statPosts) statPosts.textContent = String(archiveAll.length);
     if (archiveDesc) {
-      archiveDesc.textContent = `共 ${foodPosts.length} 篇美食 · 先显示 ${ARCHIVE_INITIAL} 篇 · 点「看更多」浏览全部`;
+      archiveDesc.textContent = `共 ${archiveAll.length} 篇 · 先显示 ${ARCHIVE_INITIAL} 篇 · 点「看更多」浏览全部`;
     }
 
     if (featuredEl) {
-      const list = foodPosts.slice(0, 3);
+      const list = [...archiveAll].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 3);
       featuredEl.innerHTML = list
         .map((p, i) => postCard(p, { featured: true, revealDelay: i * 70 }))
         .join("");
@@ -209,9 +140,7 @@ async function loadHomePosts() {
       bindPostXhsLinks(featuredEl);
     }
 
-    renderRegionChips(archiveAll);
-    renderCategoryChips(archiveAll);
-    renderArchive(foodPosts, false);
+    renderArchive(archiveAll, false);
   } catch {
     const recentEl = document.getElementById("recent-posts");
     if (recentEl) {
@@ -230,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-show-more")?.addEventListener("click", () => {
     const btn = document.getElementById("btn-show-more");
     const expanded = btn?.dataset.expanded === "1";
-    renderArchive(archiveFood, !expanded);
+    renderArchive(archiveAll, !expanded);
     if (!expanded) {
       document.getElementById("archive-more-wrap")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
