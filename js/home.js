@@ -65,8 +65,8 @@ function postCard(p, opts = {}) {
         <p class="post-meta">${p.location}</p>
       </div>
       <div class="post-actions">
-        <a class="btn btn-sm" href="${mapUrl}">地图</a>
-        <a class="btn btn-sm btn-outline" href="${xhs}" target="_blank" rel="noopener">见原帖</a>
+        <a class="btn btn-sm post-link-map" href="${mapUrl}">地图</a>
+        <a class="btn btn-sm btn-outline post-link-xhs" href="${xhs}" target="_blank" rel="noopener noreferrer" data-post-id="${p.id}">见原帖</a>
       </div>
     </article>`;
 }
@@ -129,6 +129,23 @@ function renderArchive(posts, expanded) {
   }
 
   window.initCrabWalker?.();
+  bindPostXhsLinks(recentEl);
+}
+
+function bindPostXhsLinks(root) {
+  if (!root || !PU) return;
+  root.querySelectorAll(".post-link-xhs[data-post-id]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      const id = el.dataset.postId;
+      const post = archiveAll.find((p) => p.id === id);
+      if (!post) return;
+      const url = PU.xhsUrl(post);
+      if (!url || url === "#") return;
+      e.stopPropagation();
+      e.preventDefault();
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+  });
 }
 
 async function loadHomePosts() {
@@ -143,7 +160,7 @@ async function loadHomePosts() {
     const statPosts = document.getElementById("stat-posts");
     if (statPosts) statPosts.textContent = String(archiveAll.length);
     if (archiveDesc) {
-      archiveDesc.textContent = `先显示 ${ARCHIVE_INITIAL} 篇 · 封面优先 · 点「看更多」浏览全部`;
+      archiveDesc.textContent = `手机两列一览 · 先显示 ${ARCHIVE_INITIAL} 篇 · 点「看更多」浏览全部`;
     }
 
     if (featuredEl) {
@@ -153,6 +170,7 @@ async function loadHomePosts() {
         .map((p, i) => postCard(p, { featured: true, revealDelay: i * 70 }))
         .join("");
       window.observeReveals?.(featuredEl);
+      bindPostXhsLinks(featuredEl);
     }
 
     renderCategoryChips(archiveAll);

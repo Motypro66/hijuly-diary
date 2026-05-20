@@ -35,7 +35,7 @@
 
 /* Hero：全宽、大字、少框 */
 .page-bear .hero-july {
-  min-height: min(88vh, 720px);
+  min-height: min(78vh, 640px);
   display: flex;
   align-items: center;
   padding-bottom: var(--section-pad);

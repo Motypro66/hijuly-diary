@@ -1,0 +1,226 @@
+/* v4.3 · 排版与交互：顶栏、手机双列、丝滑转场、外链可点 */
+
+/* 去掉 Bike Bear 式跑马灯（用户要的是整体 concept，不是滚动字条） */
+.bear-ticker {
+  display: none !important;
+}
+
+/* ── 顶栏：电脑充实 / 手机紧凑 ── */
+.site-bar-rich .nav-inner {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  min-height: var(--header-h, 64px);
+}
+
+.site-bar-rich .nav-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.site-bar-rich .nav-tagline {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ink-tertiary);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.site-bar-rich .site-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.site-bar-rich .nav-cta {
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff !important;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.site-bar-rich .nav-cta:hover {
+  background: var(--coral);
+  transform: translateY(-1px);
+}
+
+.site-bar-rich .nav-cta-ghost {
+  background: transparent;
+  color: var(--ink) !important;
+  border: 2px solid var(--ink);
+}
+
+.site-bar-rich .nav-cta-ghost:hover {
+  background: var(--ink);
+  color: #fff !important;
+}
+
+@media (min-width: 900px) {
+  .site-bar-rich .nav-inner {
+    grid-template-columns: minmax(0, 1.2fr) auto auto;
+    gap: 2rem;
+  }
+
+  .site-bar-rich .nav-tagline {
+    font-size: 0.85rem;
+  }
+
+  .page-home .site-bar-rich .nav-tagline--home {
+    display: block;
+  }
+}
+
+@media (max-width: 899px) {
+  .site-bar-rich {
+    --header-h: 52px;
+  }
+
+  .site-bar-rich .nav-inner {
+    grid-template-columns: 1fr auto;
+    gap: 0.35rem 0.5rem;
+  }
+
+  .site-bar-rich .nav-tagline {
+    display: none;
+  }
+
+  .site-bar-rich .site-logo-link {
+    font-size: 0.95rem !important;
+  }
+
+  .site-bar-rich .logo-sub {
+    display: none;
+  }
+
+  .site-bar-rich .site-nav a {
+    font-size: 0.72rem !important;
+    padding: 0.32rem 0.55rem !important;
+  }
+
+  .site-bar-rich .nav-cta {
+    font-size: 0.72rem;
+    padding: 0.38rem 0.75rem;
+  }
+}
+
+/* Hero 顶距（无 ticker） */
+.page-bear.page-home .hero-july {
+  padding-top: calc(var(--header-h, 64px) + 1.5rem);
+}
+
+/* 外链必须可点（盖过 reveal / 螃蟹层） */
+.post-card .post-actions {
+  position: relative;
+  z-index: 12;
+}
+
+.post-link-xhs,
+.post-link-map {
+  position: relative;
+  z-index: 13;
+  cursor: pointer;
+}
+
+/* 手机：全部笔记 2 列，一屏约 4 张 */
+@media (max-width: 639px) {
+  .page-bear .notes-grid.posts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem 0.65rem;
+  }
+
+  .page-bear .notes-grid .post-card {
+    gap: 0.45rem;
+  }
+
+  .page-bear .notes-grid .post-cover {
+    border-radius: 3px;
+    box-shadow: 0 8px 24px rgba(28, 43, 51, 0.1);
+  }
+
+  .page-bear .notes-grid .post-info {
+    padding: 0.1rem 0 0;
+  }
+
+  .page-bear .notes-grid .post-title {
+    font-size: 0.78rem;
+    -webkit-line-clamp: 2;
+    margin-bottom: 0.15rem;
+  }
+
+  .page-bear .notes-grid .post-hook {
+    display: none;
+  }
+
+  .page-bear .notes-grid .post-meta {
+    font-size: 0.65rem;
+  }
+
+  .page-bear .notes-grid .post-tags .post-tag {
+    font-size: 0.58rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .page-bear .notes-grid .pick-badge {
+    display: none;
+  }
+
+  .page-bear .notes-grid .post-actions {
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.25rem 0 0.35rem;
+  }
+
+  .page-bear .notes-grid .post-actions .btn-sm {
+    font-size: 0.68rem;
+    padding: 0.35rem 0.5rem;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 丝滑转场（Bike Bear 式淡入淡出 + 轻微缩放） */
+.page-transition-overlay {
+  background: var(--ocean-deep);
+  transform: scale(1.04);
+  transition: opacity 0.52s cubic-bezier(0.76, 0, 0.24, 1),
+    transform 0.52s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.page-transition-overlay.is-active {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.page-transition-overlay.is-entering {
+  animation: page-enter 0.62s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes page-enter {
+  0% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+body.is-page-leaving {
+  overflow: hidden;
+}
+
+/* 地图按钮文案 */
+.page-v4 .detail-maps.is-named::before {
+  content: "📍 ";
+}

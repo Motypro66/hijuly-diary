@@ -132,8 +132,9 @@ function renderMarkers() {
     const PU = window.PostUtils;
     const xhs = PU ? PU.xhsUrl(p) : p.xhsLink || "#";
     const gmap = PU ? PU.googleMapsUrl(p) : "";
+    const mapLabel = PU ? PU.mapsLinkLabel(p) : "Google 地图";
     const gmapBtn = gmap
-      ? `<a class="popup-link popup-maps" href="${gmap}" target="_blank" rel="noopener">📍 Google 地图</a>`
+      ? `<a class="popup-link popup-maps" href="${gmap}" target="_blank" rel="noopener noreferrer">📍 ${mapLabel}</a>`
       : "";
 
     const marker = L.marker([p.lat, p.lng], { icon })
@@ -145,7 +146,7 @@ function renderMarkers() {
           <p class="popup-loc">${p.location}</p>
           <div class="popup-actions">
             ${gmapBtn}
-            <a class="popup-link popup-xhs" href="${xhs}" target="_blank" rel="noopener">见原帖 →</a>
+            <a class="popup-link popup-xhs" href="${xhs}" target="_blank" rel="noopener noreferrer">见原帖 →</a>
             <button type="button" class="popup-detail" onclick="window.selectPost('${p.id}')">详情</button>
           </div>
         </div>`
@@ -225,9 +226,14 @@ function showDetail(post) {
       link.href = url;
       link.hidden = false;
       link.textContent = "见原帖 →";
+      link.onclick = (e) => {
+        e.preventDefault();
+        window.open(url, "_blank", "noopener,noreferrer");
+      };
     } else {
       link.hidden = true;
       link.removeAttribute("href");
+      link.onclick = null;
     }
   }
 
@@ -237,9 +243,11 @@ function showDetail(post) {
     if (gurl) {
       mapsEl.href = gurl;
       mapsEl.hidden = false;
-      mapsEl.textContent = `📍 ${post.location || "Google 地图"}`;
+      mapsEl.classList.add("is-named");
+      mapsEl.textContent = `📍 ${PU.mapsLinkLabel(post)}`;
     } else {
       mapsEl.hidden = true;
+      mapsEl.classList.remove("is-named");
     }
   }
 
