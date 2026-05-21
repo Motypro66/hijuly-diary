@@ -100,6 +100,7 @@ function renderArchive(posts, expanded) {
 
   window.initCrabWalker?.();
   bindPostXhsLinks(recentEl);
+  window.PostPreview?.bindPreviews(recentEl);
 }
 
 function bindPostXhsLinks(root) {
@@ -124,6 +125,7 @@ async function loadHomePosts() {
     const res = await fetch("data/posts.json");
     if (!res.ok) throw new Error(String(res.status));
     archiveAll = await res.json();
+    window.PostPreview?.registerPosts(archiveAll);
 
     const statPosts = document.getElementById("stat-posts");
     if (statPosts) statPosts.textContent = String(archiveAll.length);
@@ -138,6 +140,7 @@ async function loadHomePosts() {
         .join("");
       window.observeReveals?.(featuredEl);
       bindPostXhsLinks(featuredEl);
+      window.PostPreview?.bindPreviews(featuredEl);
     }
 
     renderArchive(archiveAll, false);

@@ -94,6 +94,8 @@ async function init() {
     }
     grid.innerHTML = posts.map((p) => postCard(p)).join("");
     bindXhs(grid, all);
+    window.PostPreview?.registerPosts(all);
+    window.PostPreview?.bindPreviews(grid);
     window.observeReveals?.(grid);
   } catch {
     document.getElementById("category-posts").innerHTML = `<p class="recent-empty">加载失败</p>`;

@@ -41,8 +41,18 @@ async function loadPosts() {
 
 function getFiltered() {
   const PU = window.PostUtils;
-  const food = POSTS.filter((p) => PU?.isFoodPost(p));
-  const base = activeFilter === "all" ? food : food.filter((p) => p.category === activeFilter);
+  const nonFoodCats = ["haokang", "haowu"];
+  const isNonFoodCat = nonFoodCats.includes(activeFilter);
+
+  let base;
+  if (activeFilter === "all") {
+    base = POSTS.filter((p) => PU?.isFoodPost(p));
+  } else if (isNonFoodCat) {
+    base = POSTS.filter((p) => p.category === activeFilter);
+  } else {
+    base = POSTS.filter((p) => PU?.isFoodPost(p) && p.category === activeFilter);
+  }
+
   return base.sort((a, b) => {
     const am = PU?.hasMaps(a) ? 1 : 0;
     const bm = PU?.hasMaps(b) ? 1 : 0;

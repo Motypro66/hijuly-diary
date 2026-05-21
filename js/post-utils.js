@@ -72,19 +72,33 @@ window.PostUtils = {
     return false;
   },
 
-  coverImage(post, className = "post-cover") {
+  coverImage(post, className = "post-cover", opts = {}) {
     const src = this.imageSrc(post);
     const alt = (post.title || "笔记封面").replace(/"/g, "&quot;");
     if (!src) {
       return `<div class="${className} post-cover--empty crab-walk-surface" aria-hidden="true"><span>🦀</span></div>`;
     }
-    const href = this.hasMaps(post)
-      ? `map.html?id=${encodeURIComponent(post.id)}`
-      : `random.html?pick=${encodeURIComponent(post.id)}`;
-    return `
+
+    const mode = opts.link ?? (opts.preview ? "preview" : "auto");
+    const useMap =
+      mode === "map" ||
+      (mode === "auto" && post.lat != null && post.lng != null) ||
+      (mode === "auto" && this.hasMaps(post) && this.isFoodPost(post));
+
+    if (useMap) {
+      const href = `map.html?id=${encodeURIComponent(post.id)}`;
+      return `
       <a class="${className} crab-walk-surface" href="${href}" tabindex="-1" aria-hidden="true">
         <img src="${src}" alt="${alt}" loading="lazy" decoding="async"
              onerror="this.closest('.post-cover').classList.add('is-broken')">
       </a>`;
+    }
+
+    return `
+      <button type="button" class="${className} post-cover--preview crab-walk-surface"
+              data-post-preview="${post.id}" aria-label="放大预览：${alt}">
+        <img src="${src}" alt="${alt}" loading="lazy" decoding="async"
+             onerror="this.closest('.post-cover').classList.add('is-broken')">
+      </button>`;
   },
 };

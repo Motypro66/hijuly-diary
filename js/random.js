@@ -10,12 +10,12 @@ function applyBranding() {
   if (fx && cfg.xhsProfileUrl) fx.href = cfg.xhsProfileUrl;
 }
 
-function pickFoodPost(posts, forcedId) {
-  const food = posts.filter((p) => PU.isFoodPost(p));
+function pickPost(posts, forcedId) {
   if (forcedId) {
-    const found = food.find((p) => p.id === forcedId);
+    const found = posts.find((p) => p.id === forcedId);
     if (found) return found;
   }
+  const food = posts.filter((p) => PU.isFoodPost(p));
   if (!food.length) return null;
   return food[Math.floor(Math.random() * food.length)];
 }
@@ -56,7 +56,7 @@ async function init() {
   try {
     const res = await fetch("data/posts.json");
     const posts = await res.json();
-    const post = pickFoodPost(posts, forced);
+    const post = pickPost(posts, forced);
     if (!post) {
       document.getElementById("random-card").innerHTML =
         `<p class="random-loading">美食笔记加载中…</p>`;

@@ -402,16 +402,23 @@
 }
 
 .random-card__media {
-  aspect-ratio: 3 / 4;
-  max-height: 52vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  max-height: min(56vh, 520px);
   background: var(--sand, #f5e6d3);
   overflow: hidden;
 }
 
 .random-card__media img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: min(56vh, 520px);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
 }
 
 .random-card__empty {
@@ -480,8 +487,15 @@
 
 @media (max-width: 899px) {
   .random-card__media {
-    max-height: 48vh;
+    max-height: min(50vh, 440px);
+    padding: 0.35rem;
+    box-sizing: border-box;
   }
+
+  .random-card__media img {
+    max-height: min(50vh, 440px);
+  }
+
   .random-card__title {
     font-size: 1.05rem;
   }
