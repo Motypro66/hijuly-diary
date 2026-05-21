@@ -25,6 +25,7 @@
           <div class="post-preview__actions">
             <button type="button" class="btn btn-primary" id="post-preview-xhs">见原帖 →</button>
             <a class="btn btn-sm" id="post-preview-map" href="#" target="_blank" rel="noopener noreferrer" hidden></a>
+            <a class="btn btn-sm btn-outline" id="post-preview-pin" href="#" hidden>地图标点</a>
           </div>
         </div>
       </div>`;
@@ -50,6 +51,7 @@
     const loc = document.getElementById("post-preview-loc");
     const xhsBtn = document.getElementById("post-preview-xhs");
     const mapLink = document.getElementById("post-preview-map");
+    const pinLink = document.getElementById("post-preview-pin");
 
     if (media) {
       media.innerHTML = src
@@ -87,6 +89,15 @@
         mapLink.textContent = `📍 ${PU.mapsLinkLabel(post) || "导航"}`;
       } else {
         mapLink.hidden = true;
+      }
+    }
+
+    if (pinLink) {
+      if (post.lat != null && post.lng != null) {
+        pinLink.href = `map.html?id=${encodeURIComponent(post.id)}`;
+        pinLink.hidden = false;
+      } else {
+        pinLink.hidden = true;
       }
     }
 

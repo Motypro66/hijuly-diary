@@ -28,7 +28,7 @@ function postCard(p) {
   const tag = window.categoryLabel(p.category);
   return `
     <article class="post-card reveal">
-      ${PU.coverImage(p)}
+      ${PU.coverImage(p, "post-cover", { link: "preview" })}
       <div class="post-info">
         <span class="post-tag tag-${p.category}">${tag}</span>
         <h3 class="post-title">${p.title}</h3>

@@ -53,7 +53,7 @@ function postCard(p, opts = {}) {
 
   return `
     <article class="post-card reveal${featured ? " post-card--featured" : ""}"${delayAttr}>
-      ${PU.coverImage(p)}
+      ${PU.coverImage(p, "post-cover", { link: "preview" })}
       <div class="post-info">
         <div class="post-tags">
           ${featured ? '<span class="pick-badge">精选</span>' : ""}
