@@ -75,6 +75,53 @@
   content: "";
 }
 
+/* Hero title: two-line reveal, keeps em gradient visible */
+.display-line {
+  display: block;
+}
+
+.display-reveal .display-line {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(14px);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.display-reveal.is-visible .display-line {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+.display-reveal.is-visible .display-line:nth-child(2) {
+  transition-delay: 0.14s;
+}
+
+.page-v4 .display em.gradient-text {
+  color: var(--coral, #ff5c4d);
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  animation: none;
+}
+
+.page-v4 .display em.gradient-text .blur-reveal-char {
+  color: var(--coral, #ff5c4d);
+  background: linear-gradient(
+    90deg,
+    var(--coral, #ff5c4d) 0%,
+    #ff9a5c 50%,
+    #ffb347 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 4s ease-in-out infinite;
+}
+
 /* ═══════════════════════════════════════════
    3. Sparkle Particles (React Bits SparkleEffect)
    ═══════════════════════════════════════════ */
@@ -726,6 +773,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .display-reveal .display-line {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
   .sparkle,
   .sparkle--star {
     animation: none;

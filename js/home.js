@@ -1,3 +1,9 @@
+function formatHeroBio(text) {
+  const match = String(text).match(/^(\/\/\s*.+?\s*\/\/)\s*(.+)$/);
+  if (!match) return text;
+  return `<span class="hero-lead__tag">${match[1]}</span><span class="hero-lead__text">${match[2]}</span>`;
+}
+
 const TAG_LABELS = window.POST_LABELS;
 const PU = window.PostUtils;
 const ARCHIVE_INITIAL = 8;
@@ -15,7 +21,8 @@ function applySiteBranding() {
     if (el && val != null) el.textContent = val;
   };
 
-  set("profile-bio", cfg.bio);
+  const bioEl = document.getElementById("profile-bio");
+  if (bioEl && cfg.bio) bioEl.innerHTML = formatHeroBio(cfg.bio);
   set("profile-bio-sub", cfg.bioSub || "美食 · 好康 · 好物");
   set("series-name", cfg.seriesName);
   if (cfg.stats) {

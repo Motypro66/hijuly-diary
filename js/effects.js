@@ -81,6 +81,16 @@
     });
   }
 
+  function initDisplayLineReveal() {
+    const h1 = document.querySelector(".display");
+    if (!h1 || h1.dataset.revealReady) return;
+    h1.dataset.revealReady = "1";
+    h1.classList.add("display-reveal");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => h1.classList.add("is-visible"));
+    });
+  }
+
   function revealBlurText(root) {
     const els = root
       ? root.querySelectorAll(".blur-reveal")
@@ -514,8 +524,7 @@
     addScrollIndicator();
     enhanceHeroText();
 
-    initBlurReveal(".display", true);
-    setTimeout(() => revealBlurText(), 200);
+    initDisplayLineReveal();
 
     initCounters();
 
