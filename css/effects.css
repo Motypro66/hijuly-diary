@@ -1,7 +1,8 @@
 /* ═══════════════════════════════════════════════
    小螃蟹看世界 · Visual Effects Enhancement
-   React Bits-style effects: Sparkle, BlurText,
-   GradientText, Glassmorphism, Counter, Parallax
+   React Bits-style: SpotlightCard, ShinyText,
+   Aurora, DotGrid, BlurText, GradientText,
+   Glassmorphism, Counter, Tilt, Parallax
    ═══════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════
@@ -59,7 +60,19 @@
 /* Stagger children */
 .blur-reveal--stagger .blur-reveal-char {
   display: inline-block;
-  transition: filter 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  filter: blur(10px);
+  opacity: 0;
+  transition: filter 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.blur-reveal--stagger.is-visible .blur-reveal-char {
+  filter: blur(0);
+  opacity: 1;
+}
+
+.blur-reveal--stagger br {
+  display: block;
+  content: "";
 }
 
 /* ═══════════════════════════════════════════
@@ -463,13 +476,263 @@
    Mobile: reduce motion
    ═══════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════
+   17. Spotlight Card (React Bits SpotlightCard)
+   ═══════════════════════════════════════════ */
+
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --spotlight-color: rgba(255, 92, 77, 0.12);
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 180px at var(--mouse-x) var(--mouse-y),
+    var(--spotlight-color),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.spotlight-card:hover::before,
+.spotlight-card:focus-within::before {
+  opacity: 1;
+}
+
+.spotlight-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.spotlight-card--ocean {
+  --spotlight-color: rgba(42, 107, 124, 0.14);
+}
+
+.spotlight-card--light {
+  --spotlight-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ═══════════════════════════════════════════
+   18. Shiny Text (React Bits ShinyText)
+   ═══════════════════════════════════════════ */
+
+@keyframes shiny-sweep {
+  0% { background-position: 150% center; }
+  100% { background-position: -50% center; }
+}
+
+.shiny-text {
+  display: inline-block;
+  background-image: linear-gradient(
+    120deg,
+    var(--coral, #ff5c4d) 0%,
+    var(--coral, #ff5c4d) 35%,
+    #ffb347 50%,
+    var(--coral, #ff5c4d) 65%,
+    var(--coral, #ff5c4d) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shiny-sweep 3.5s ease-in-out infinite;
+}
+
+.shiny-text--ocean {
+  background-image: linear-gradient(
+    120deg,
+    var(--ocean, #2a6b7c) 0%,
+    var(--ocean, #2a6b7c) 35%,
+    #4a9db0 50%,
+    var(--ocean, #2a6b7c) 65%,
+    var(--ocean, #2a6b7c) 100%
+  );
+}
+
+/* ═══════════════════════════════════════════
+   19. Aurora Background (React Bits Aurora)
+   ═══════════════════════════════════════════ */
+
+.hero-aurora {
+  position: absolute;
+  inset: -30% -10%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  opacity: 0.55;
+}
+
+.hero-aurora__strip {
+  position: absolute;
+  width: 140%;
+  height: 55%;
+  left: -20%;
+  border-radius: 50%;
+  filter: blur(60px);
+  mix-blend-mode: multiply;
+  animation: aurora-drift 14s ease-in-out infinite;
+}
+
+.hero-aurora__strip:nth-child(1) {
+  top: 5%;
+  background: linear-gradient(90deg, rgba(255, 92, 77, 0.35), rgba(255, 179, 71, 0.2));
+  animation-delay: 0s;
+}
+
+.hero-aurora__strip:nth-child(2) {
+  top: 35%;
+  background: linear-gradient(90deg, rgba(42, 107, 124, 0.28), rgba(74, 157, 176, 0.15));
+  animation-delay: -4s;
+  animation-duration: 18s;
+}
+
+.hero-aurora__strip:nth-child(3) {
+  top: 55%;
+  background: linear-gradient(90deg, rgba(255, 154, 92, 0.22), rgba(255, 92, 77, 0.12));
+  animation-delay: -8s;
+  animation-duration: 16s;
+}
+
+@keyframes aurora-drift {
+  0%, 100% { transform: translateX(-8%) rotate(-2deg) scale(1); }
+  33% { transform: translateX(6%) rotate(1deg) scale(1.05); }
+  66% { transform: translateX(-4%) rotate(-1deg) scale(0.98); }
+}
+
+/* ═══════════════════════════════════════════
+   20. Dot Grid (React Bits DotGrid)
+   ═══════════════════════════════════════════ */
+
+.hero-dotgrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+}
+
+.hero-dotgrid canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════
+   21. Tilt Card (React Bits TiltedCard)
+   ═══════════════════════════════════════════ */
+
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.35s ease;
+  will-change: transform;
+}
+
+.tilt-card__shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--tilt-x, 50%) var(--tilt-y, 50%),
+    rgba(255, 255, 255, 0.18),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.tilt-card:hover .tilt-card__shine {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════
+   22. Step Cards Enhancement
+   ═══════════════════════════════════════════ */
+
+.page-v4 .step-card {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.page-v4 .step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(255, 92, 77, 0.1);
+}
+
+.page-v4 .step-num {
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1),
+              background 0.35s ease;
+}
+
+.page-v4 .step-card:hover .step-num {
+  transform: scale(1.08);
+  background: var(--coral-tint);
+  color: var(--coral);
+}
+
+/* ═══════════════════════════════════════════
+   23. CTA Band Glow Pulse
+   ═══════════════════════════════════════════ */
+
+.page-v4 .cta-inner {
+  position: relative;
+  overflow: hidden;
+  animation: cta-pulse 4s ease-in-out infinite;
+}
+
+.page-v4 .cta-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 120%, rgba(255, 255, 255, 0.12), transparent);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════
+   24. Hero Grid Layout Polish
+   ═══════════════════════════════════════════ */
+
+.page-v4 .hero-july {
+  position: relative;
+  overflow: hidden;
+}
+
+.page-v4 .hero-july > .wrap {
+  position: relative;
+  z-index: 3;
+}
+
+.page-v4 .hero-grid {
+  align-items: center;
+}
+
+.page-v4 .stat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.page-v4 .stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(255, 92, 77, 0.12);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sparkle,
   .sparkle--star {
     animation: none;
     opacity: 0.6;
   }
-  .hero-animated-bg {
+  .hero-animated-bg,
+  .hero-aurora__strip {
     animation: none;
   }
   .glass-card::before {
@@ -488,5 +751,16 @@
   }
   .float-anim {
     animation: none;
+  }
+  .shiny-text {
+    animation: none;
+    -webkit-text-fill-color: var(--coral);
+    background: none;
+  }
+  .page-v4 .cta-inner {
+    animation: none;
+  }
+  .tilt-card {
+    transform: none !important;
   }
 }

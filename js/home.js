@@ -101,6 +101,7 @@ function renderArchive(posts, expanded) {
   window.initCrabWalker?.();
   bindPostXhsLinks(recentEl);
   window.PostPreview?.bindPreviews(recentEl);
+  window.VisualEffects?.refreshDynamic(recentEl);
 }
 
 function bindPostXhsLinks(root) {
@@ -128,7 +129,6 @@ async function loadHomePosts() {
     window.PostPreview?.registerPosts(archiveAll);
 
     const statPosts = document.getElementById("stat-posts");
-    if (statPosts) statPosts.textContent = String(archiveAll.length);
     if (archiveDesc) {
       archiveDesc.textContent = `共 ${archiveAll.length} 篇 · 先显示 ${ARCHIVE_INITIAL} 篇 · 点「看更多」浏览全部`;
     }
@@ -141,9 +141,18 @@ async function loadHomePosts() {
       window.observeReveals?.(featuredEl);
       bindPostXhsLinks(featuredEl);
       window.PostPreview?.bindPreviews(featuredEl);
+      window.VisualEffects?.refreshDynamic(featuredEl);
     }
 
     renderArchive(archiveAll, false);
+
+    if (statPosts) {
+      const count = String(archiveAll.length);
+      statPosts.textContent = count;
+      delete statPosts.dataset.counted;
+      statPosts.dataset.target = count;
+      window.VisualEffects?.animateCounter?.(statPosts, count);
+    }
   } catch {
     const recentEl = document.getElementById("recent-posts");
     if (recentEl) {
@@ -157,6 +166,8 @@ async function loadHomePosts() {
 
 document.addEventListener("DOMContentLoaded", () => {
   applySiteBranding();
+  window.VisualEffects?.initCounters?.();
+  window.VisualEffects?.runCounters?.(document.querySelector(".hero-stats"));
   loadHomePosts();
 
   document.getElementById("btn-show-more")?.addEventListener("click", () => {

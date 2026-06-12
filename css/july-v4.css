@@ -226,6 +226,7 @@
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  padding: 1.75rem 1.25rem;
 }
 
 .page-v4 .step-num {
@@ -509,6 +510,10 @@
 .page-v4 .section-steps {
   padding-top: 3.5rem;
   padding-bottom: 3.5rem;
+}
+
+.page-v4 .section-steps {
+  background: linear-gradient(180deg, var(--bg-elevated) 0%, rgba(253, 246, 238, 0.6) 100%);
 }
 
 .page-v4 .section-head {
